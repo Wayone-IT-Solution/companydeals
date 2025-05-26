@@ -6,6 +6,12 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
+       <li class="nav-item">
+      <a class="nav-link" href="{{ route('admin.userlist') }}">
+        <i class="menu-icon mdi mdi-account-multiple"></i>
+        <span class="menu-title">Users</span>
+      </a>
+    </li>
     <li class="nav-item">
       <a class="nav-link" href="{{ route('admin.companylist') }}">
         <i class="menu-icon mdi mdi-home-circle"></i>
@@ -13,6 +19,25 @@
       </a>
     </li>
 
+   
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('admin.propertylist') }}">
+        <i class="menu-icon mdi mdi-home-circle"></i>
+        <span class="menu-title">Properties</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('admin.trademarklist') }}">
+        <i class="menu-icon mdi mdi-home-circle"></i>
+        <span class="menu-title">NOC Trademarks</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('admin.assignmentlist') }}">
+        <i class="menu-icon mdi mdi-home-circle"></i>
+        <span class="menu-title">Assignments</span>
+      </a>
+    </li>
 
     <li class="nav-item">
       <a class="nav-link" href="{{ route('admin.homepage') }}">
@@ -56,30 +81,7 @@
         <span class="menu-title">Admins</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ route('admin.userlist') }}">
-        <i class="menu-icon mdi mdi-account-multiple"></i>
-        <span class="menu-title">Users</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ route('admin.propertylist') }}">
-        <i class="menu-icon mdi mdi-home-circle"></i>
-        <span class="menu-title">Properties</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ route('admin.trademarklist') }}">
-        <i class="menu-icon mdi mdi-home-circle"></i>
-        <span class="menu-title">NOC Trademarks</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ route('admin.assignmentlist') }}">
-        <i class="menu-icon mdi mdi-home-circle"></i>
-        <span class="menu-title">Assignments</span>
-      </a>
-    </li>
+  
     <li class="nav-item">
       <a class="nav-link" href="{{ route('admin.testimonial.list') }}">
         <i class="menu-icon mdi mdi-home-circle"></i>

@@ -12,7 +12,7 @@ Route::get('/companies', [IndexController::class, 'companylist'])->name('fronten
 Route::get('/properties', [IndexController::class, 'propertylist'])->name('frontend.properties');
 Route::get('/treademarks', [IndexController::class, 'treademarklist'])->name('frontend.treademark');
 Route::get('/assignments', [IndexController::class, 'assignmentlist'])->name('frontend.assignments');
-
+Route::get('/company-detail/{id}', [IndexController::class, 'show'])->name('company.view');
 
 
 Route::get("/privacy-policy", function(){

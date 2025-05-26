@@ -47,7 +47,7 @@ class IndexController extends Controller
 
     public function assignmentlist()
     {
-          $assignments = Assignment::where('is_active', 'active')->whereNotIn('deal_closed', [1])->orderBy('updated_at', 'desc')->get();
+        $assignments = Assignment::where('is_active', 'active')->whereNotIn('deal_closed', [1])->orderBy('updated_at', 'desc')->get();
         return view('pages.assignment', compact('assignments'));
     }
 
@@ -61,17 +61,35 @@ class IndexController extends Controller
         $nocTrademarks = NocTrademark::where('is_active', 'active')->whereNotIn('deal_closed', [1])->orderBy('updated_at', 'desc')->get();
         return view('pages.trademarklist', compact('nocTrademarks'));
     }
-    public function companylist()
-    {
-         $companys = \DB::table('companies')
-            ->where('status', 'active')
-            ->where(function ($query) {
-                $query->where('deal_closed', 0)
-                    ->orWhereNull('deal_closed');
-            })->orderBy('created_at', 'desc')->get(); // Convert to array of objects
-;
-        return view('pages.companylist', compact('companys'));
+   public function companylist()
+{
+    $companys = \DB::table('companies')
+        ->where('status', 'active')
+        ->where(function ($query) {
+            $query->where('deal_closed', 0)
+                  ->orWhereNull('deal_closed');
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('pages.companylist', compact('companys'));
+}
+
+
+    public function show($id)
+{
+    $companys = \DB::table('companies')
+        ->where('id', $id)
+        ->get(); // Only one record
+
+    if (!$companys) {
+        abort(404); // Not Found
     }
+
+    return view('pages.companylist', compact('companys'));
+}
+
+
     public function contact_submit(Request $request)
     {
         $request->validate([

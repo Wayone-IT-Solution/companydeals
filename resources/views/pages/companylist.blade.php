@@ -1,16 +1,29 @@
 @extends('layout.master')
 @section('content')
-<style>  
-
-.text-primary{
-  color: rgb(57 192 116) !important ;
+<style>
+.text-primary {
+  color: rgb(57 192 116) !important;
 }
 
+.hover-scale:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
+button.btn-link {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+button.btn-link:hover {
+  text-decoration: underline;
+}
 </style>
+
 <section class="dashboard-wrap py-3 bg-light">
   <div class="container">
     <div class="row mb-4 text-center">
-      <div class="col-12 ">
+      <div class="col-12">
         <h2 class="fw-bold text-primary display-5">Companies</h2>
         <hr class="w-25 mx-auto border-3 border-primary">
       </div>
@@ -33,13 +46,13 @@
               <li class="mb-2"><strong>Industry:</strong> <span class="text-secondary">{{ $company->industry }}</span></li>
               <li class="mb-2"><strong>Ask Price:</strong> <span class="text-success fw-semibold">₹{{ number_format($company->ask_price_amount ?? 0) }} {{ $company->ask_price_unit ?? 'Rupees' }}/month</span></li>
               <li class="mb-2">
-                <strong>Status:</strong> 
+                <strong>Status:</strong>
                 @if(strtolower($company->status ?? '') === 'active')
-                  <span class="badge bg-success text-uppercase">Active</span>
+                <span class="badge bg-success text-uppercase">Active</span>
                 @elseif(strtolower($company->status ?? '') === 'inactive')
-                  <span class="badge bg-danger text-uppercase">Inactive</span>
+                <span class="badge bg-danger text-uppercase">Inactive</span>
                 @else
-                  <span class="badge bg-secondary text-uppercase">{{ $company->status ?? 'N/A' }}</span>
+                <span class="badge bg-secondary text-uppercase">{{ $company->status ?? 'N/A' }}</span>
                 @endif
               </li>
 
@@ -52,6 +65,22 @@
               @endif
             </ul>
 
+            <!-- Social Share Section -->
+            <div class="mb-3">
+              <p class="fw-semibold mb-1">Share This Company:</p>
+              @php
+                $shareUrl = urlencode(route('company.view', $company->id)); // You can change the route to actual company detail page
+                $shareText = urlencode($company->name . ' is available on our platform.');
+              @endphp
+              <div class="d-flex gap-2 flex-wrap">
+                <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="btn btn-sm btn-success">WhatsApp</a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}" target="_blank" class="btn btn-sm btn-primary">LinkedIn</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="btn btn-sm btn-primary">Facebook</a>
+                <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="btn btn-sm btn-info">Twitter</a>
+              </div>
+            </div>
+
+            <!-- More Details Collapsible -->
             <div id="moreDetails{{ $company->id }}" class="collapse border-top pt-3 mt-auto">
               <ul class="list-unstyled small text-muted">
                 <li><strong>Have GST?:</strong> {{ $company->have_gst ?? 'N/A' }}</li>
@@ -92,17 +121,18 @@
                 <li><strong>GST Status:</strong> {{ $company->gst_status ?? 'N/A' }}</li>
                 <li><strong>RBI Status:</strong> {{ $company->rbi_status ?? 'N/A' }}</li>
                 <li><strong>FEMA Status:</strong> {{ $company->fema_status ?? 'N/A' }}</li>
-                <li><strong>GST Status:</strong> {{ $company->gst_status ?? 'N/A' }}</li>
                 <li><strong>Auditor's Report:</strong> {{ $company->auditor_report ?? 'N/A' }}</li>
               </ul>
             </div>
 
+            <!-- Show More / Less Toggle -->
             <button class="btn btn-link text-primary mt-auto d-flex align-items-center gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#moreDetails{{ $company->id }}" aria-expanded="false" aria-controls="moreDetails{{ $company->id }}">
               <span class="toggle-text">Show More</span>
               <svg class="bi bi-chevron-down toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M1.646 5.646a.5.5 0 0 1 .708 0L8 11.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
               </svg>
             </button>
+
           </div>
         </div>
       </div>
@@ -128,20 +158,4 @@
     });
   });
 </script>
-
-<style>
-  .hover-scale:hover {
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
-  }
-
-  button.btn-link {
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  button.btn-link:hover {
-    text-decoration: underline;
-  }
-</style>
 @endsection
