@@ -7,6 +7,7 @@ use App\Models\Property;
 use App\Models\Company;
 use App\Models\Assignment;
 use App\Models\Buyer;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -763,4 +764,14 @@ class BuyerController extends Controller
 
         );
     }
+
+    public function message(Request $request){
+        $buyer_id =  \Auth::guard('user')->id();
+
+       $message =  Message::where('user_id', $buyer_id)->orderby('id','desc')->get() ;
+       return view('pages.user.message',compact('message'));
+
+       
+    }
+
 }

@@ -25,6 +25,7 @@ Route::get('user/logout', [UserLoginController::class, 'logout'])->name('user.lo
 Route::get('/user/change-password', [UserLoginController::class, 'showChangePasswordForm'])->name('user.change-password.form');
     Route::post('/user/change-password', [UserLoginController::class, 'changePassword'])->name('user.change-password');
 
+	Route::get('/user/buyer/message',[BuyerController::class,'message'])->name('user.buyer.messaage');
 
 // Authrized access
 Route::middleware('sellerloggedin')->group(function() {
