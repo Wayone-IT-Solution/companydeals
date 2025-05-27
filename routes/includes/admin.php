@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\AssignmentController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Models\Admin;
+use App\Http\Controllers\MessageController;
+
 
 Route::get('/admin', [AdminLoginController::class, 'showLoginForm'])->name('admin.login1');
 Route::get('admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
@@ -102,4 +104,13 @@ Route::put('/admin/about', [AdminController::class, 'aboutupdate'])->name('admin
   Route::get('/admin/announcement/{id}/edit', [AnnouncementController::class, 'edit'])->name('admin.announcement.edit');
   Route::post('/admin/announcement/update', [AnnouncementController::class, 'update'])->name('admin.announcement.update');
   Route::get('/admin/announcement/{id}/delete', [AnnouncementController::class, 'delete'])->name('admin.announcement.delete');
+
+
+   ######## Message Management ########
+  Route::get('/admin/messages', [MessageController::class, 'index'])->name('pages.messages.list');
+  Route::get('/admin/messages/add', [MessageController::class, 'add'])->name('pages.messages.add');
+  Route::post('/admin/messages', [MessageController::class, 'store'])->name('pages.messages.store');
+  Route::get('/admin/messages/{id}/edit', [MessageController::class, 'edit'])->name('pages.messages.edit');
+  Route::put('/admin/messages/{id}', [MessageController::class, 'update'])->name('pages.messages.update');
+  Route::delete('/admin/messages/{id}', [MessageController::class, 'destroy'])->name('pages.messages.destroy');
 });
