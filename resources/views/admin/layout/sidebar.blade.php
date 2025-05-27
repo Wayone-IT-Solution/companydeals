@@ -70,7 +70,7 @@
 
 
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('admin.propertylist') }}">
+      <a class="nav-link" href="{{ route('pages.messages.list') }}">
         <i class="menu-icon mdi mdi-message-text-outline"></i>
         <span class="menu-title">Send Message</span>
       </a>
