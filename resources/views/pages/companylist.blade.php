@@ -1,23 +1,23 @@
 @extends('layout.master')
 @section('content')
 <style>
-.text-primary {
-  color: rgb(57 192 116) !important;
-}
+  .text-primary {
+    color: rgb(57 192 116) !important;
+  }
 
-.hover-scale:hover {
-  transform: translateY(-5px);
-  transition: transform 0.3s ease;
-}
+  .hover-scale:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+  }
 
-button.btn-link {
-  text-decoration: none;
-  font-weight: 600;
-}
+  button.btn-link {
+    text-decoration: none;
+    font-weight: 600;
+  }
 
-button.btn-link:hover {
-  text-decoration: underline;
-}
+  button.btn-link:hover {
+    text-decoration: underline;
+  }
 </style>
 
 <section class="dashboard-wrap py-3 bg-light">
@@ -31,7 +31,7 @@ button.btn-link:hover {
 
     <div class="row g-4">
       @foreach ($companys as $company)
-      <div class="col-md-6 col-lg-4">
+      <div class="col-md-6 col-lg-4" id="card-share-{{ $company->id }}">
         <div class="card shadow-lg border-0 rounded-4 h-100 hover-scale">
           <div class="card-header bg-primary bg-opacity-10 rounded-top-4">
             <h5 class="card-title fw-bold text-primary mb-0">
@@ -69,14 +69,18 @@ button.btn-link:hover {
             <div class="mb-3">
               <p class="fw-semibold mb-1">Share This Company:</p>
               @php
-                $shareUrl = urlencode(route('company.view', $company->id)); // You can change the route to actual company detail page
-                $shareText = urlencode($company->name . ' is available on our platform.');
+              $shareUrl = urlencode(route('company.view', $company->id)); // You can change the route to actual company detail page
+              $shareText = urlencode($company->name . ' is available on our platform.');
               @endphp
               <div class="d-flex gap-2 flex-wrap">
-                <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="btn btn-sm btn-success">WhatsApp</a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}" target="_blank" class="btn btn-sm btn-primary">LinkedIn</a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="btn btn-sm btn-primary">Facebook</a>
-                <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="btn btn-sm btn-info">Twitter</a>
+                <!-- <button onclick="shareCardImage({{ $company->id }})" class="btn btn-sm btn-secondary">
+                  Share as Image
+                </button> -->
+
+                <a href="#" onclick="event.preventDefault();shareCardImage(this,'{{ $company->id }}','wp' )" target="_blank" class="btn btn-sm btn-success">WhatsApp</a>
+                <a href="#" onclick="event.preventDefault();shareCardImage(this,'{{ $company->id }}','lk' )" target="_blank" class="btn btn-sm btn-primary">LinkedIn</a>
+                <a href="#" onclick="event.preventDefault();shareCardImage(this,'{{ $company->id }}','fb' )" target="_blank" class="btn btn-sm btn-primary">Facebook</a>
+                <a href="" onclick="event.preventDefault();shareCardImage(this,'{{ $company->id }}','tt' )" target="_blank" class="btn btn-sm btn-info">Twitter</a>
               </div>
             </div>
 
@@ -129,7 +133,7 @@ button.btn-link:hover {
             <button class="btn btn-link text-primary mt-auto d-flex align-items-center gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#moreDetails{{ $company->id }}" aria-expanded="false" aria-controls="moreDetails{{ $company->id }}">
               <span class="toggle-text">Show More</span>
               <svg class="bi bi-chevron-down toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M1.646 5.646a.5.5 0 0 1 .708 0L8 11.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                <path fill-rule="evenodd" d="M1.646 5.646a.5.5 0 0 1 .708 0L8 11.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
               </svg>
             </button>
 
@@ -141,7 +145,63 @@ button.btn-link:hover {
   </div>
 </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <script>
+  function shareCardImage(anchorElement, companyId, link) {
+    const href = $(anchorElement).attr('href'); // Now this works
+    // make url #
+    // alert(link);
+
+    const cardElement = document.getElementById('card-share-' + companyId);
+
+    html2canvas(cardElement, {
+      scale: 2,
+      useCORS: true
+    }).then(canvas => {
+      const imageData = canvas.toDataURL('image/png');
+
+      fetch("{{ route('share.card.upload') }}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+          },
+          body: JSON.stringify({
+            image: imageData,
+            company_id: companyId
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.image_url) {
+            let shareUrl;
+            if (link == 'wp') {
+              shareUrl = `https://wa.me/?text=Check out this company! ${encodeURIComponent(data.image_url)}`;
+            }
+            if (link == 'lk') {
+              shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(data.image_url)}`
+            }
+            if (link == 'fb') {
+              shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data.image_url)}`
+            }
+
+            if (link == 'tt') {
+              shareUrl = `https://twitter.com/intent/tweet?text=Check out this company! ${encodeURIComponent(data.image_url)}`;
+
+            }
+            window.open(shareUrl, '_blank');
+          } else {
+            alert("Failed to upload image.");
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Something went wrong.");
+        });
+    });
+  }
+
   document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(button => {
     button.addEventListener('click', () => {
       const target = document.querySelector(button.getAttribute('data-bs-target'));

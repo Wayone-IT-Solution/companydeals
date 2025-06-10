@@ -81,21 +81,24 @@ $ask_price_unit_option = GeneralUtils::get_select_option('ask_price_unit_option'
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label>
-                                                    <input type="checkbox" class="terms" id="term1"> I confirm that I have reviewed and agreed to the specific payment terms, including
-                                                    any fees, processing timelines, and refund policies, before proceeding with the
-                                                    transaction.
+                                                    <input type="checkbox" class="terms" id="term1"> 
+
+I agree that the platform fee paid to Companydeals is non-refundable, even if no deal happens. The fee is only for access to listings and sharing contacts, not for ensuring any deal or response. There is no guarantee of buyer interest, seller action, or a successful transaction.
+
+
                                                 </label><br>
 
                                                 <label>
-                                                    <input type="checkbox" class="terms" id="term2"> I confirm that I understand the dispute resolution process, including the steps to
-                                                    escalate issues and the applicable jurisdiction, in case of any disagreements or
-                                                    conflicts arising from the transaction.
+                                                    <input type="checkbox" class="terms" id="term2"> I am solely responsible for checking the authenticity and legality of all parties and documents involved. Companydeals will not be held liable for any loss, fraud, or failure by any party in the deal.
+Any issue found before or after the deal is entirely my responsibility.
+
+
                                                 </label><br>
 
                                                 <label>
-                                                    <input type="checkbox" class="terms" id="term3"> I confirm that I am aware that Company Deals uses third-party payment processors
-                                                    and that I hold Company Deals harmless for any issues, delays, or breaches arising
-                                                    from the payment processor’s services.
+                                                    <input type="checkbox" class="terms" id="term3">I allow Companydeals to share my name, phone number, and email with the other party after payment. I accept that all communication and transactions are at my own risk. I will not hold Companydeals responsible for any dispute, miscommunication, or failed deal.
+<b>All the entries of Companies, Properties, Trademarks and Assignments (in Seller & buyer Section both) must reflect on top as and when edited.</b>
+
                                                 </label><br>
                                                 <p class="text-danger d-none">You must agree to all terms before submitting.</p>
                                             </div>

@@ -22,6 +22,7 @@
                 <th>Is Active?</th>
                 <th>Payment</th>
                 <th> View </th>
+                <th> Date & Time stamp </th>
               </tr>
             </thead>
             <tbody>
@@ -46,6 +47,10 @@
                 <td>{{$trademark->is_active}}</td>
                 <td><a href="{{ route('admin.trademark.payment', ['service_id'=>$trademark->id,'service_type'=>'seller_trademark']) }}">Seller Payment</a></td>
                 <td><a href="{{ route('admin.trademark.detail', $trademark->id) }}"><i class="mdi mdi-eye-outline"></i></a> </td>    
+
+                                                   <td class="text-center"> {{ $trademark->created_at->timezone('Asia/Kolkata')->format('d-m-Y h:i A') }}
+                                                   </td>
+
               </tr>
               @endforeach
             </tbody>

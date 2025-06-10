@@ -44,8 +44,9 @@
 
                                                     @if($company['buyer_status'] == 'active')
                                                     @php
-                                                    $updatedSeller = str_replace("No of deal closed", "No of deal closed previously", $company['seller']);
-                                                    $updatedSeller = str_replace("amount of deal closed:", "</br>Amount of deal closed previously:", $updatedSeller);
+                                                    
+                                                    $updatedSeller = str_replace("No of deal closed", "</br><b>No of deal closed previously</b>", $company['seller']);
+                                                    $updatedSeller = str_replace("amount of deal closed:", "</br><b>Amount of deal closed previously:</b>", $updatedSeller.'</br></br>');
                                                     @endphp
                                                     <li style="color:black;">
                                                         Seller Details:<br>
@@ -309,8 +310,8 @@
 
                                                 @if($company['buyer_status'] == 'active')
                                                 @php
-                                                $updatedSeller = str_replace("No of deal closed", "No of deal closed previously", $company['seller']);
-                                                $updatedSeller = str_replace("amount of deal closed:", "</br>Amount of deal closed previously:", $updatedSeller);
+                                                $updatedSeller = str_replace("No of deal closed", "</br><b>No of deal closed previously</b>", $company['seller']);
+                                                $updatedSeller = str_replace("amount of deal closed:", "</br><b>Amount of deal closed previously:</b>", $updatedSeller.'</br></br>');
                                                 @endphp
                                                 <li style="color:black;">
                                                     Seller Details:<br>

@@ -173,6 +173,9 @@ class Company extends Model
         'stock_exchange_status',
         'stock_exchange_year',
 
+        'certicate_status',
+        'certicate_year',
+
         'ask_price',
         'ask_price_unit',
         'ask_price_amount',
@@ -198,7 +201,7 @@ class Company extends Model
         $payments = self::join('payments', 'companies.id', '=', 'payments.service_id')->where('service_id', '=', $this->id)->where('service_type', '=', 'seller_company')->select('payments.*')->orderBy('created_at', 'desc')->get();
         return $payments;
     }
-    public static function seller_companies($condition, $third = false)
+    public static function seller_companies($condition, $third = false, $fourth=false)
     {
         $user =  \Auth::guard('user')->user();
         if ($condition == "all") {
@@ -209,6 +212,9 @@ class Company extends Model
 
         if ($third == true) {
             $companies = $user->companies()->where('companies.deal_closed', 1)->get();
+        }
+        if ($fourth == true) {
+            $companies = $user->companies()->where('companies.deal_closed', 0)->get();
         }
 
         $arrCompany = array();

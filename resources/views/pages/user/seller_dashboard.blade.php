@@ -83,7 +83,7 @@
 
 
                     <div>
-                        <h2 class="text-center"  style="border-bottom: 2px solid black;">Deal Closed</h2>
+                        <h2 class="text-center" style="border-bottom: 2px solid black;">Deal Closed</h2>
                         <hr>
 
                         @if(count($dealClosedCompanyArr) > 0)
@@ -104,7 +104,7 @@
                         </div>
                         @endif()
 
-                                                @if(count($dealClosedPropertyArr) > 0)
+                        @if(count($dealClosedPropertyArr) > 0)
 
                         <div class="buyer-seller-details">
                             <header>
@@ -123,7 +123,7 @@
 
                         @endif()
 
-                             @if(count($dealClosedTrademarkArr) > 0)
+                        @if(count($dealClosedTrademarkArr) > 0)
                         <div class="buyer-seller-details">
                             <header>
                                 <h2>Trademarks Deal Closed</h2>
@@ -139,7 +139,7 @@
 
                         @endif()
 
-  @if(count($dealClosedAssignmentArr) > 0)
+                        @if(count($dealClosedAssignmentArr) > 0)
                         <div class="buyer-seller-details">
                             <header>
                                 <h2>Assignments Deal Closed</h2>

@@ -22,6 +22,7 @@
                 <th>Is Active?</th>
                 <th>Payment</th>
                 <th> View </th>
+                <th> Date & TimeStamp </th>
               </tr>
             </thead>
             <tbody>
@@ -37,6 +38,9 @@
                 <td>{{$assignment->is_active}}</td>
                 <td><a href="{{ route('admin.assignment.payment', ['service_id'=>$assignment->id,'service_type'=>'seller_assignment']) }}">Seller Payment</a></td>
                 <td><a href="{{ route('admin.assignment.detail', $assignment->id) }}"><i class="mdi mdi-eye-outline"></i></a> </td>    
+
+                 <td class="text-center"> {{ $assignment->created_at->timezone('Asia/Kolkata')->format('d-m-Y h:i A') }}
+                                                   </td>
               </tr>
               @endforeach
             </tbody>

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 use App\Models\Banner;
+use Illuminate\Support\Facades\Storage;
 
 class IndexController extends Controller
 {
@@ -61,33 +62,33 @@ class IndexController extends Controller
         $nocTrademarks = NocTrademark::where('is_active', 'active')->whereNotIn('deal_closed', [1])->orderBy('updated_at', 'desc')->get();
         return view('pages.trademarklist', compact('nocTrademarks'));
     }
-   public function companylist()
-{
-    $companys = \DB::table('companies')
-        ->where('status', 'active')
-        ->where(function ($query) {
-            $query->where('deal_closed', 0)
-                  ->orWhereNull('deal_closed');
-        })
-        ->orderBy('created_at', 'desc')
-        ->get();
+    public function companylist()
+    {
+        $companys = \DB::table('companies')
+            ->where('status', 'active')
+            ->where(function ($query) {
+                $query->where('deal_closed', 0)
+                    ->orWhereNull('deal_closed');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    return view('pages.companylist', compact('companys'));
-}
+        return view('pages.companylist', compact('companys'));
+    }
 
 
     public function show($id)
-{
-    $companys = \DB::table('companies')
-        ->where('id', $id)
-        ->get(); // Only one record
+    {
+        $companys = \DB::table('companies')
+            ->where('id', $id)
+            ->get(); // Only one record
 
-    if (!$companys) {
-        abort(404); // Not Found
+        if (!$companys) {
+            abort(404); // Not Found
+        }
+
+        return view('pages.companylist', compact('companys'));
     }
-
-    return view('pages.companylist', compact('companys'));
-}
 
 
     public function contact_submit(Request $request)
@@ -103,5 +104,38 @@ class IndexController extends Controller
         $to = config('mail.contact_us.mail_to');
         Mail::to($to)->send(new ContactMail($request->all()));
         return response()->json(['success' => 'Your message has been sent successfully!']);
+    }
+
+    public function upload(Request $request)
+    {
+        $data = $request->validate([
+            'image' => 'required|string',
+            'company_id' => 'required|integer',
+        ]);
+
+        $image = $data['image'];
+        $companyId = $data['company_id'];
+
+        // Clean base64 string
+        $image = preg_replace('#^data:image/\w+;base64,#i', '', $image);
+        $image = str_replace(' ', '+', $image);
+
+        $filename = 'company_' . $companyId . '_' . time() . '.png';
+        $savePath = public_path('shared_cards/' . $filename);
+
+        // Ensure the folder exists
+        if (!file_exists(public_path('shared_cards'))) {
+            mkdir(public_path('shared_cards'), 0777, true);
+        }
+
+        // Save the file
+        file_put_contents($savePath, base64_decode($image));
+
+        $url = asset('shared_cards/' . $filename);
+
+        return response()->json([
+            'success' => true,
+            'image_url' => $url,
+        ]);
     }
 }

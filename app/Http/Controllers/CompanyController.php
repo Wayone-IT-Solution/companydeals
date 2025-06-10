@@ -409,6 +409,10 @@ class CompanyController extends Controller
         if ($request->input('stock_exchange_status') == 'Updated upto') {
             $validatedData['stock_exchange_year'] = $request->input('stock_exchange_year');
         }
+        $validatedData['certicate_status'] = $request->input('certicate_status');
+        if ($request->input('certicate_status') == 'Updated upto') {
+            $validatedData['certicate_year'] = $request->input('certicate_year');
+        }
         $companyData->update($validatedData);
         return redirect()->route('user.seller.companyform.showstep4', ['id' => $companyData->id]);
     }

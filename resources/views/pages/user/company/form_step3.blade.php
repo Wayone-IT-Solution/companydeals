@@ -11,7 +11,7 @@ $selected_income_tax_year = old('income_tax_year',isset($companyData)? $companyD
 $income_tax_year_option = GeneralUtils::get_compliance_year_option($selected_income_tax_year, $companyData->year_of_incorporation);
 
 $selected_gst_status = old('gst_status',isset($companyData)? $companyData->gst_status:'');
-$gst_status_option = GeneralUtils::get_select_option('compliance_status2',$selected_gst_status ,  $companyData->have_gst);
+$gst_status_option = GeneralUtils::get_select_option('compliance_status2',$selected_gst_status , $companyData->have_gst);
 $selected_gst_year = old('gst_year',isset($companyData)? $companyData->gst_year:'');
 $gst_year_option = GeneralUtils::get_compliance_year_option($selected_gst_year, $companyData->year_of_incorporation);
 
@@ -34,6 +34,14 @@ $selected_stock_exchange_status = old('stock_exchange_status',isset($companyData
 $stock_exchange_status_option = GeneralUtils::get_select_option('compliance_status2',$selected_stock_exchange_status);
 $selected_stock_exchange_year = old('stock_exchange_year',isset($companyData)? $companyData->stock_exchange_year:'');
 $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected_stock_exchange_year,$companyData->year_of_incorporation);
+
+
+
+
+$selected_certicate_status = old('certicate_status',isset($companyData)? $companyData->certicate_status:'');
+$certificate_status_option = GeneralUtils::get_select_option('compliance_status2', $selected_certicate_status);
+$selected_certificate_year = old('stock_exchange_year',isset($companyData)? $companyData->certicate_year:'');
+$certificate_year_option = GeneralUtils::get_compliance_year_option($selected_certificate_year, $companyData->year_of_incorporation);
 
 
 
@@ -96,7 +104,7 @@ $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border"> Income Tax <span class="text-danger">*</span></legend>
                                         <div class="field">
-                                            
+
 
                                             <select id="income_tax_status" class="form-select" name="income_tax_status" required>
                                                 <option value="">-Select-</option>
@@ -115,7 +123,7 @@ $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">GST <span class="text-danger">*</span></legend>
                                         <div class="field">
-                                            
+
 
                                             <select id="gst_status" class="form-select" name="gst_status" required>
                                                 <option value="">-Select-</option>
@@ -134,7 +142,7 @@ $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">RBI <span class="text-danger">*</span></legend>
                                         <div class="field">
-                                            
+
 
                                             <select id="rbi_status" required class="form-select" name="rbi_status">
                                                 <option value="">-Select-</option>
@@ -153,7 +161,7 @@ $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">FEMA <span class="text-danger">*</span></legend>
                                         <div class="field">
-                                            
+
 
                                             <select id="fema_status" required class="form-select" name="fema_status">
                                                 <option value="">-Select-</option>
@@ -172,7 +180,7 @@ $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">SEBI <span class="text-danger">*</span></legend>
                                         <div class="field">
-                                
+
 
                                             <select id="sebi_status" required class="form-select" name="sebi_status">
                                                 <option value="">-Select-</option>
@@ -191,7 +199,7 @@ $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">Stock Exchange <span class="text-danger">*</span></legend>
                                         <div class="field">
-                                            
+
 
                                             <select id="stock_exchange_status" required class="form-select" name="stock_exchange_status">
                                                 <option value="">-Select-</option>
@@ -202,6 +210,25 @@ $stock_exchange_year_option = GeneralUtils::get_compliance_year_option($selected
                                             <select id="stock_exchange_year" class="form-select" name="stock_exchange_year">
                                                 <option value="">-Select-</option>
                                                 {!!$stock_exchange_year_option!!}
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <fieldset class="scheduler-border">
+                                        <legend class="scheduler-border">80/120 A Certificate <span class="text-danger">*</span></legend>
+                                        <div class="field">
+
+
+                                            <select id="certicate_status" required class="form-select" name="certicate_status">
+                                                <option value="">-Select-</option>
+                                                {!!$certificate_status_option!!}
+                                            </select>
+                                        </div>
+                                        <div class="field d-none">
+                                            <select id="certicate_year" class="form-select" name="certicate_year">
+                                                <option value="">-Select-</option>
+                                                {!!$certificate_year_option!!}
                                             </select>
                                         </div>
                                     </fieldset>

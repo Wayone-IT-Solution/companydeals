@@ -32,11 +32,14 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
+            'user_id' => 'required|array',
             'message' => 'required',
         ]);
 
-        Message::create($request->all());
+        foreach ($request->user_id as $list) {
+
+            Message::create(['user_id' => $list, 'message' => $request->message]);
+        }
 
         return redirect()->back()->with('success', 'Added Successfully!');
     }

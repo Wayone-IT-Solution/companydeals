@@ -215,7 +215,7 @@ class SellerController extends Controller
         $dealClosedTrademarkArr = array();
         $activeAssignmentArr = array();
         $dealClosedAssignmentArr = array();
-        $activeCompanyArr =  Company::seller_companies("active");
+        $activeCompanyArr =  Company::seller_companies("active",false,true);
         $activePropertyArr = Property::seller_properties('active',);
         $activeTrademarkArr = NocTrademark::seller_noctrademark('active');
         $activeAssignmentArr = Assignment::seller_assignments('active');

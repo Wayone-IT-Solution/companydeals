@@ -14,7 +14,8 @@
                 <form action="{{ route('admin.banner.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="banner">Banner Image</label>
+                        <label for="banner">Banner Image</label></br>
+                        <span><b><i>Banner size should be  725 * 225 </i></b></span>
                         <input type="file" name="banner" id="banner" class="form-control" required>
                     </div>
                     <div class="form-group">

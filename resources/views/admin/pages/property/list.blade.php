@@ -22,6 +22,7 @@
                 <th>Status</th>
                 <th>Payment</th>
                 <th>View</th>
+                <th>Date & TimeStamp</th>
               </tr>
             </thead>
             <tbody>
@@ -41,7 +42,8 @@
                 <td>{{$property->status}}</td>
                 <td><a href="{{ route('admin.property.payment', ['service_id'=>$property->id,'service_type'=>'seller_property']) }}">Seller Payment</a></td>
                 <td><a href="{{ route('admin.property.detail', $property->id) }}"><i class="mdi mdi-eye-outline"></i></a> </td>
-                   
+                                   <td class="text-center"> {{ $property->created_at->timezone('Asia/Kolkata')->format('d-m-Y h:i A') }}
+
               </tr>
               @endforeach
             </tbody>

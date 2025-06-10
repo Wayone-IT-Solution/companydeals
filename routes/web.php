@@ -13,6 +13,8 @@ Route::get('/properties', [IndexController::class, 'propertylist'])->name('front
 Route::get('/treademarks', [IndexController::class, 'treademarklist'])->name('frontend.treademark');
 Route::get('/assignments', [IndexController::class, 'assignmentlist'])->name('frontend.assignments');
 Route::get('/company-detail/{id}', [IndexController::class, 'show'])->name('company.view');
+Route::post('/share-card/upload', [IndexController::class, 'upload'])->name('share.card.upload');
+
 
 
 Route::get("/privacy-policy", function(){

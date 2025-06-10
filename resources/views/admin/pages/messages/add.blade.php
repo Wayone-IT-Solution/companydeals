@@ -18,7 +18,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Select Buyer / Seller</label>
-                            <select class="form-control" id="name" style="padding: 0 !important;" name="user_id"
+                            <select class="form-control" id="name" style="padding: 0 !important;" multiple name="user_id[]"
                                 required>
                                 <option value="" selected>-- Select Buyer / Seller --</option>
                                 @foreach ($users as $user)
