@@ -16,6 +16,18 @@ class TrademarkController extends Controller
         NocTrademark::where('id', $id)->update(['home_featured' => true]);
         return redirect()->route('admin.trademark.detail', $id )->with('message', 'Featured set successfully.');
     }
+
+     public function toggleApproval($id)
+    {
+        $property = NocTrademark::findOrFail($id);
+        $property->approved = !$property->approved; // Toggle the value
+        $property->save();
+
+        $status = $property->approved ? 'approved' : 'disapproved';
+        return redirect()->back()->with('message', "Noc Trademark has been $status.");
+    }
+
+
     protected function getPaymentDetail($payment){
             $userdetail = "";
             if($payment->payment_from =='admin')

@@ -77,6 +77,7 @@ class NocTrademark extends Model
                 'ask_price' => $eachTrademark->ask_price,
                 'ask_price_unit' => $eachTrademark->ask_price_unit,
                 'buyer_id' => $eachTrademark->buyer_id,
+                'approved' => $eachTrademark->approved,
                 'is_active' => ($eachTrademark->deal_closed) ? "Deal Closed" : $eachTrademark->is_active,
 
 

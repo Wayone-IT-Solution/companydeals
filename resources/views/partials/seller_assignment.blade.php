@@ -38,7 +38,10 @@
             @endif
              @if($assignment['deal_closed']!=1)
             <div class="col-md-6">
+                @if($assignment['approved'] == 0)
                 <a class="cta-primary mt-4"  href="{{ route('user.seller.editassignment', $assignment['id'])}}" type="submit">Edit</a>
+
+                @endif()
             </div>
             @endif
         </article>

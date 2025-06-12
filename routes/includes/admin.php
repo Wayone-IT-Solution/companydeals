@@ -34,7 +34,7 @@ Route::middleware('adminloggedin')->group(function () {
   // end banner page 
   Route::get('admin/home', [AdminLoginController::class, 'homepage'])->name('admin.homepage');
   Route::get('admin/about/{slug}', [AdminController::class, 'about'])->name('admin.about');
-Route::put('/admin/about', [AdminController::class, 'aboutupdate'])->name('admin.about.update');
+  Route::put('/admin/about', [AdminController::class, 'aboutupdate'])->name('admin.about.update');
 
   Route::get('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
@@ -64,6 +64,7 @@ Route::put('/admin/about', [AdminController::class, 'aboutupdate'])->name('admin
   Route::put('/admin/property/paymentsave', [PropertyController::class, 'paymentsave'])->name('admin.property.paymentsave');
   Route::get('/admin/property/{id}/detail', [PropertyController::class, 'propertydetail'])->name('admin.property.detail');
   Route::get('/admin/property/{id}/toggle-featured', [PropertyController::class, 'toggleFeatured'])->name('admin.property.togglefeatured');
+  Route::post('/admin/property/{id}/toggle-approval', [PropertyController::class, 'toggleApproval'])->name('admin.property.toggleApproval');
 
 
   // NOC Trademark management
@@ -73,6 +74,7 @@ Route::put('/admin/about', [AdminController::class, 'aboutupdate'])->name('admin
   Route::put('/admin/trademark/paymentsave', [TrademarkController::class, 'paymentsave'])->name('admin.trademark.paymentsave');
   Route::get('/admin/trademark/{id}/detail', [TrademarkController::class, 'trademarkdetail'])->name('admin.trademark.detail');
   Route::get('/admin/trademark/{id}/toggle-featured', [TrademarkController::class, 'toggleFeatured'])->name('admin.trademark.togglefeatured');
+  Route::post('/admin/trademark/{id}/toggle-approval', [TrademarkController::class, 'toggleApproval'])->name('admin.trademark.toggleApproval');
 
   //Company management
   Route::get('/admin/companylist', [CompanyController::class, 'companylist'])->name('admin.companylist');
@@ -88,6 +90,7 @@ Route::put('/admin/about', [AdminController::class, 'aboutupdate'])->name('admin
   Route::get('/admin/assignment/{id}/detail', [AssignmentController::class, 'assignmentdetail'])->name('admin.assignment.detail');
   Route::get('/admin/assignment/{id}/toggle-featured', [AssignmentController::class, 'toggleFeatured'])->name('admin.assignment.togglefeatured');
 
+  Route::post('/admin/assignment/{id}/toggle-approval', [AssignmentController::class, 'toggleApproval'])->name('admin.assignment.toggleApproval');
 
   //Testimonial management
   Route::get('/admin/testimonial/list', [TestimonialController::class, 'index'])->name('admin.testimonial.list');
@@ -106,7 +109,7 @@ Route::put('/admin/about', [AdminController::class, 'aboutupdate'])->name('admin
   Route::get('/admin/announcement/{id}/delete', [AnnouncementController::class, 'delete'])->name('admin.announcement.delete');
 
 
-   ######## Message Management ########
+  ######## Message Management ########
   Route::get('/admin/messages', [MessageController::class, 'index'])->name('pages.messages.list');
   Route::get('/admin/messages/add', [MessageController::class, 'add'])->name('pages.messages.add');
   Route::post('/admin/messages', [MessageController::class, 'store'])->name('pages.messages.store');

@@ -215,7 +215,7 @@ class SellerController extends Controller
         $dealClosedTrademarkArr = array();
         $activeAssignmentArr = array();
         $dealClosedAssignmentArr = array();
-        $activeCompanyArr =  Company::seller_companies("active",false,true);
+        $activeCompanyArr =  Company::seller_companies("active", false, true);
         $activePropertyArr = Property::seller_properties('active',);
         $activeTrademarkArr = NocTrademark::seller_noctrademark('active');
         $activeAssignmentArr = Assignment::seller_assignments('active');
@@ -226,7 +226,7 @@ class SellerController extends Controller
         $dealClosedTrademarkArr =  NocTrademark::seller_noctrademark("all", true);
         $dealClosedAssignmentArr = Assignment::seller_assignments('all', true);
 
-        return view('pages.user.seller_dashboard', compact('activePropertyArr', 'activeTrademarkArr', 'activeCompanyArr', 'activeAssignmentArr','dealClosedCompanyArr','dealClosedPropertyArr','dealClosedTrademarkArr','dealClosedAssignmentArr'));
+        return view('pages.user.seller_dashboard', compact('activePropertyArr', 'activeTrademarkArr', 'activeCompanyArr', 'activeAssignmentArr', 'dealClosedCompanyArr', 'dealClosedPropertyArr', 'dealClosedTrademarkArr', 'dealClosedAssignmentArr'));
     }
     public function seller_properties()
     {

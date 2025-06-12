@@ -17,6 +17,21 @@ class AssignmentController extends Controller
         Assignment::where('id', $id)->update(['home_featured' => true]);
         return redirect()->route('admin.assignment.detail', $id )->with('message', 'Featured set successfully.');
     }
+
+
+      public function toggleApproval($id)
+    {
+        $property = Assignment::findOrFail($id);
+        $property->approved = !$property->approved; // Toggle the value
+        $property->save();
+
+        $status = $property->approved ? 'approved' : 'disapproved';
+        return redirect()->back()->with('message', "Assignment has been $status.");
+    }
+
+
+
+    
     protected function getPaymentDetail($payment){
             $userdetail = "";
             if($payment->payment_from =='admin')

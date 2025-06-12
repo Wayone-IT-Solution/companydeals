@@ -13,9 +13,9 @@ $ask_price_unit_option = GeneralUtils::get_select_option('ask_price_unit_option'
                 <div class="dashboard-details">
                     <button class="navToggle2 cta-primary mb-4"><i class="fa-solid fa-sliders"></i> Open Dashboard Nav</button>
                     <div class="form-wrap">
-                        <header>
+                        <!-- <header>
                             <h2>SUPPORTING DOCUMENTS (OPTIONAL)</h2>
-                        </header>
+                        </header> -->
 
                         @if (session('status'))
                         <div class="alert alert-success">
@@ -36,6 +36,7 @@ $ask_price_unit_option = GeneralUtils::get_select_option('ask_price_unit_option'
                             @csrf
                             @method('PUT')
                             <div class="row">
+                                {{-- -
                                 @foreach ($documents as $doc)
                                 <div class="col-md-6">
                                     <fieldset class="scheduler-border">
@@ -52,6 +53,8 @@ $ask_price_unit_option = GeneralUtils::get_select_option('ask_price_unit_option'
                                     </fieldset>
                                 </div>
                                 @endforeach
+
+                                 --}}
                                 <div class="col-md-12">
                                     <fieldset class="scheduler-border pricewithunit">
                                         <legend class="scheduler-border">Ask price</legend>
