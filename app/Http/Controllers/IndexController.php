@@ -19,23 +19,78 @@ class IndexController extends Controller
     public function index()
     {
         $dashBoardData = array();
-        $dashBoardData['no_company'] = \DB::table('companies')
-            ->where('status', 'active')
-            ->where(function ($query) {
-                $query->where('deal_closed', 0)
-                    ->orWhereNotNull('deal_closed');
-            })
-            ->count();
 
         $dashBoardData['no_users'] = \DB::table('users')->where([['email_verified', 1], ['phone_verified', 1]])->count('*');
-        $dashBoardData['no_deal_closed'] =  \DB::table('companies')
+        $companies =  \DB::table('companies')
             ->where('status', 'active')
             ->where('deal_closed', 1)
 
             ->count();
+
+        // for counting actice companies
+        $active_companies = \DB::table('companies')
+            ->where('status', 'active')
+            ->where('deal_closed', 0)
+            ->count();
+
+        //  get total count 
+
+        $properties = \DB::table('properties')
+            ->where('status', 'active')
+            ->where('deal_closed', 1)
+            ->count();
+
+
+        // for counting actice properties
+        $active_properties = \DB::table('properties')
+            ->where('status', 'active')
+            ->where('deal_closed', 0)
+            ->count();
+
+        // assginments
+        $assignments = \DB::table('assignments')
+            ->where('is_active', 'active')
+            ->where('deal_closed', 1)
+            ->count();
+
+        // for counting actice assignments  
+        $active_assignments = \DB::table('assignments')
+            ->where('is_active', 'active')
+            ->where('deal_closed', 0)
+            ->count();
+
+
+
+        // trademarks
+        $trademarks = \DB::table('noc_trademarks')
+            ->where('is_active', 'active')
+            ->where('deal_closed', 1)
+            ->count();
+
+        // for counting actice trademarks
+        $active_trademarks = \DB::table('noc_trademarks')
+            ->where('is_active', 'active')
+            ->where('deal_closed', 0)
+            ->count();
+
+
+        $dashBoardData['no_deal_closed'] = $companies + $assignments + $trademarks + $properties;
+
+        $dashBoardData['no_company'] =  $active_companies +  $active_properties + $active_assignments + $active_trademarks;
+
+
+
         $amount_deal_closed  = \DB::table('users')->sum('amount_deal_closed');
         $dashBoardData['amount_deal_closed'] =  $amount_deal_closed / 1000;
-        $dashBoardData['featured_company'] = Company::where([['home_featured', 1], ['status', 'active']])->whereNotIn('deal_closed', [1])->first();
+
+         $dashBoardData['featured_company'] = Company::where('home_featured', 1)
+            ->where('status', 'active')
+            ->where(function ($query) {
+                $query->where('deal_closed', 0)
+                    ->orWhereNull('deal_closed');
+            })
+            ->orderBy('updated_at', 'desc')
+            ->get();
         $dashBoardData['featured_property'] = Property::where([['home_featured', 1], ['status', 'active']])->whereNotIn('deal_closed', [1])->first();
         $dashBoardData['featured_nocTrademark'] = NocTrademark::where([['home_featured', 1], ['is_active', 'active']])->whereNotIn('deal_closed', [1])->first();
         $dashBoardData['featured_assignment'] = Assignment::where([['home_featured', 1], ['is_active', 'active']])->whereNotIn('deal_closed', [1])->first();

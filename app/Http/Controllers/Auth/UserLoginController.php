@@ -9,27 +9,73 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Mail\CustomVerifyEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class UserLoginController extends Controller
 {
     public function send_verify_email($id){
-        $user = User::findOrFail($id);
-        Mail::to($user->email)->send(new CustomVerifyEmail($user));
-        return redirect()->route('user.verfy.email_phone.form',$id)->with('status', 'Email is sent to your registered email address');
+        try {
+            $user = User::findOrFail($id);
+            
+            // Check if email is already verified
+            if ($user->email_verified == 1) {
+                return redirect()->route('user.verfy.email_phone.form', $id)
+                    ->with('status', 'Your email is already verified.');
+            }
 
+            // Send verification email
+            Mail::to($user->email)->send(new CustomVerifyEmail($user));
+            
+            return redirect()->route('user.verfy.email_phone.form', $id)
+                ->with('status', 'Verification email has been sent to your registered email address.');
+        } catch (\Exception $e) {
+            \Log::error('Email verification error: ' . $e->getMessage());
+            return redirect()->route('user.verfy.email_phone.form', $id)
+                ->with('error', 'Failed to send verification email. Please try again later.');
+        }
     }
     public function verify_email_phone($id){
-        $user = User::findOrFail($id);
-        return view('pages.user.verify_email_phone',compact('user'));
+        try {
+            $user = User::findOrFail($id);
+            return view('pages.user.verify_email_phone', compact('user'));
+        } catch (\Exception $e) {
+            \Log::error('Verification page error: ' . $e->getMessage());
+            return redirect()->route('user.login')
+                ->with('error', 'Invalid verification request. Please try again.');
+        }
     }
     public function verify_email($id,$hash){
-        $user = User::findOrFail($id);
-        if(sha1($user->getEmailForVerification()) == $hash ){
-            $user->update(['email_verified' => 1,]);
-            return redirect()->route('user.verfy.email_phone.form',$id)->with('status', 'Thanks for verify your email.');
-        }
-        return redirect()->route('user.verfy.email_phone.form',$id);
+        try {
+            $user = User::findOrFail($id);
+            
+            // Check if email is already verified
+            if ($user->email_verified == 1) {
+                return redirect()->route('user.verfy.email_phone.form', $id)
+                    ->with('status', 'Your email is already verified.');
+            }
 
+            // Verify the hash
+            if (sha1($user->getEmailForVerification()) == $hash) {
+                $user->update(['email_verified' => 1]);
+                
+                // Log successful verification
+                \Log::info('Email verified successfully for user: ' . $user->email);
+                
+                return redirect()->route('user.verfy.email_phone.form', $id)
+                    ->with('status', 'Thank you for verifying your email address.');
+            }
+
+            // Log failed verification attempt
+            \Log::warning('Invalid verification attempt for user: ' . $user->email);
+            
+            return redirect()->route('user.verfy.email_phone.form', $id)
+                ->with('error', 'Invalid verification link. Please request a new verification email.');
+        } catch (\Exception $e) {
+            \Log::error('Email verification error: ' . $e->getMessage());
+            return redirect()->route('user.login')
+                ->with('error', 'Verification failed. Please try again later.');
+        }
     }
     public function showChangePasswordForm()
     {
@@ -108,30 +154,45 @@ class UserLoginController extends Controller
 
     public function register(Request $request)
     {
-        // Validate user input
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
+        try {
+            // Validate user input
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'phone' => ['required', 'digits:10', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+            ]);
 
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required','digits:10','unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+        
+            // Create the user
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'email_verified' => 0,
+                'phone_verified' => 0,
+            ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            // Send verification email
+            Mail::to($user->email)->send(new CustomVerifyEmail($user));
+            
+            // Log successful registration
+            \Log::info('New user registered: ' . $user->email);
+
+            return redirect()->route('user.verfy.email_phone.form', $user->id)
+                ->with('status', 'Registration successful! Please verify your email address.');
+        } catch (\Exception $e) {
+            \Log::error('Registration error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Registration failed. Please try again later.')
+                ->withInput();
         }
-    
-        // Create the user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-        ]);
-        Mail::to($user->email)->send(new CustomVerifyEmail($user));
-        // Log the user in
-        return redirect()->route('user.verfy.email_phone.form',$user->id)->with('status', 'You have successfully registered.');
-       // return redirect()->route('user.login')->with('status', 'You have successfully registered please login.');
     }
     public function showLoginForm(Request $request) {
         return view('pages.user.login');

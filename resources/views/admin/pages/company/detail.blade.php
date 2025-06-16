@@ -4,7 +4,7 @@
   <div class="col-12 grid-margin">
     <div class="card">
       <div class="card-body">
-      	<a type="button" href="{{ url()->previous() }}"  class="btn btn-primary me-2">Back</a>
+      	<a type="button" href="{{ url('admin/companylist') }}"  class="btn btn-primary me-2">Back</a>
         <h4 class="card-title">Company Detail</h4>
         @if(session('message'))
         <div class="alert alert-success">

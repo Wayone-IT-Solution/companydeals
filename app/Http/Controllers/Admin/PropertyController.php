@@ -22,9 +22,16 @@ class PropertyController extends Controller
     {
         $property = Property::findOrFail($id);
         $property->approved = !$property->approved; // Toggle the value
-        $property->save();
 
         $status = $property->approved ? 'approved' : 'disapproved';
+
+        // if ($status == 'approved') {
+        //     $property->status = 'active';
+        // } else {
+        //     $property->status = 'inactive';
+        // }
+        $property->save();
+
         return redirect()->back()->with('message', "Property has been $status.");
     }
 
@@ -84,7 +91,7 @@ class PropertyController extends Controller
     }
     public function propertylist()
     {
-        $properties = Property::orderBy('updated_at', 'desc')->get();
+        $properties = Property::orderBy('created_at', 'desc')->get();
         return view('admin.pages.property.list', compact('properties'));
     }
 

@@ -103,6 +103,7 @@ class Assignment extends Model
                 'deal_price_unit' => $eachAssignment->deal_price_unit,
                 'deal_closed' => $eachAssignment->deal_closed,
                 'approved' => $eachAssignment->approved,
+                'payment_id' => $eachAssignment->payment_id,
                 'buyer_id' => $eachAssignment->buyer_id,
                 'is_active' => ($eachAssignment->deal_closed) ? "Deal Closed" : $eachAssignment->is_active,
             );

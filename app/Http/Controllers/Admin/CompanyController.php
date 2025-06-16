@@ -13,7 +13,7 @@ class CompanyController extends Controller
 {
     public function toggleFeatured($id)
     {
-        Company::query()->update(['home_featured' => false]);
+        // Company::query()->update(['home_featured' => false]);
         Company::where('id', $id)->update(['home_featured' => true]);
         return redirect()->route('admin.company.detail', $id )->with('message', 'Featured set successfully.');
     }

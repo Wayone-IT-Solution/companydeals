@@ -35,6 +35,7 @@ class SellerController extends Controller
         ]);
         $validated['deal_price_amount'] = GeneralUtils::calculate_actual_ask_price($request->input('deal_price'), $request->input('deal_price_unit'));
         $validated['urn'] = uniqid();
+        $validated['is_active'] = 'inactive';
         $validated['user_id'] = \Auth::guard('user')->id();
         Assignment::create($validated);
         return redirect()->route("user.seller.assignments")->with('status', 'Your assignment has been saved successfully.');
@@ -184,6 +185,7 @@ class SellerController extends Controller
 
         $validated['valid_upto'] = $request->input('valid_upto');
         $validated['urn'] = uniqid();
+        $validated['is_active'] = 'inactive';
         $validated['user_id'] = \Auth::guard('user')->id();
         $validated['ask_price_amount'] = GeneralUtils::calculate_actual_ask_price($request->input('ask_price'), $request->input('ask_price_unit'));
         NocTrademark::create($validated);
@@ -249,6 +251,7 @@ class SellerController extends Controller
 
         ]);
         $validated['urn'] = uniqid();
+        $validated['status'] = 'inactive';
         $validated['user_id'] = \Auth::guard('user')->id();
         $validated['ask_price_amount'] = GeneralUtils::calculate_actual_ask_price($request->input('ask_price'), $request->input('ask_price_unit'));
 

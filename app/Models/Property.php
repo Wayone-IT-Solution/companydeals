@@ -76,6 +76,7 @@ class Property extends Model
                 'deal_closed' => $eachProperty->deal_closed,
                 'buyer_id' => $eachProperty->buyer_id,
                 'approved' => $eachProperty->approved,
+                'payment_id' => $eachProperty->payment_id,
             );
             if ($eachProperty->deal_closed == 1 &&  $eachProperty->buyer_id > 0) {
                 $finalBuyer = Buyer::findOrFail($eachProperty->buyer_id);

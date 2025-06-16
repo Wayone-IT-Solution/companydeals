@@ -41,82 +41,82 @@ $ask_price_unit_option = GeneralUtils::get_select_option('ask_price_unit_option'
                                 <div class="col-md-6">
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">{{$doc['label']}}</legend>
-                                        <div class="upload">
-                                            <p style="font-size: 12px;">Allowed file types: .pdf, .jpeg, .png, .xls, .doc &nbsp;|&nbsp; Max size: 2MB</p>
-                                            @if ($doc['uploaded'] == 1)
-                                            <a class="cta-primary" href="{{$doc['download_link']}}">Download</a>
-                                            <button type="button" class="cta-primary document_delete" data-url="{{$doc['delete_link']}}">delete</button>
-                                            @else
-                                            <input id="{{$doc['field_name']}}" type="file" class="form-control file_input" name="{{$doc['field_name']}}">
-                                            @endif
-                                        </div>
-                                    </fieldset>
+                                <div class="upload">
+                                    <p style="font-size: 12px;">Allowed file types: .pdf, .jpeg, .png, .xls, .doc &nbsp;|&nbsp; Max size: 2MB</p>
+                                    @if ($doc['uploaded'] == 1)
+                                    <a class="cta-primary" href="{{$doc['download_link']}}">Download</a>
+                                    <button type="button" class="cta-primary document_delete" data-url="{{$doc['delete_link']}}">delete</button>
+                                    @else
+                                    <input id="{{$doc['field_name']}}" type="file" class="form-control file_input" name="{{$doc['field_name']}}">
+                                    @endif
                                 </div>
-                                @endforeach
+                                </fieldset>
+                            </div>
+                            @endforeach
 
-                                 --}}
-                                <div class="col-md-12">
-                                    <fieldset class="scheduler-border pricewithunit">
-                                        <legend class="scheduler-border">Ask price</legend>
-                                        <div class="row">
-
-                                            <div class="col-md-6">
-                                                <div class="field">
-                                                    <input id="ask_price" type="number" class="form-control onlynumber fourdigit" name="ask_price" placeholder="Ask price" required="" value="{{old('ask_price',isset($companyData)? $companyData->ask_price:'')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="field">
-                                                    <select id="ask_price_unit" class="form-select" name="ask_price_unit" required="">
-                                                        <option value="">-Select-</option>
-                                                        {!!$ask_price_unit_option!!}
-                                                    </select>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </fieldset>
-                                </div>
-                                <div class="col-md-12">
-                                    <fieldset class="scheduler-border">
-                                        <legend class="scheduler-border">Agree to Terms and Conditions</legend>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>
-                                                    <input type="checkbox" class="terms" id="term1"> 
-
-I agree that the platform fee paid to Companydeals is non-refundable, even if no deal happens. The fee is only for access to listings and sharing contacts, not for ensuring any deal or response. There is no guarantee of buyer interest, seller action, or a successful transaction.
-
-
-                                                </label><br>
-
-                                                <label>
-                                                    <input type="checkbox" class="terms" id="term2"> I am solely responsible for checking the authenticity and legality of all parties and documents involved. Companydeals will not be held liable for any loss, fraud, or failure by any party in the deal.
-Any issue found before or after the deal is entirely my responsibility.
-
-
-                                                </label><br>
-
-                                                <label>
-                                                    <input type="checkbox" class="terms" id="term3">I allow Companydeals to share my name, phone number, and email with the other party after payment. I accept that all communication and transactions are at my own risk. I will not hold Companydeals responsible for any dispute, miscommunication, or failed deal.
-<b>All the entries of Companies, Properties, Trademarks and Assignments (in Seller & buyer Section both) must reflect on top as and when edited.</b>
-
-                                                </label><br>
-                                                <p class="text-danger d-none">You must agree to all terms before submitting.</p>
-                                            </div>
-                                        </div>
-
-                                    </fieldset>
-
+                            --}}
+                            <div class="col-md-12">
+                                <fieldset class="scheduler-border pricewithunit">
+                                    <legend class="scheduler-border">Ask price</legend>
                                     <div class="row">
+
                                         <div class="col-md-6">
-                                            <a class="cta-primary" href="{{ route('user.seller.companyform.showstep3',['id' => $companyData->id])}}">Previous</a>
+                                            <div class="field">
+                                                <input id="ask_price" type="number" class="form-control onlynumber fourdigit" name="ask_price" placeholder="Ask price" required="" value="{{old('ask_price',isset($companyData)? $companyData->ask_price:'')}}">
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <button class="cta-primary float-end" type="submit">Save</button>
+                                            <div class="field">
+                                                <select id="ask_price_unit" class="form-select" name="ask_price_unit" required="">
+                                                    <option value="">-Select-</option>
+                                                    {!!$ask_price_unit_option!!}
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset class="scheduler-border">
+                                    <legend class="scheduler-border">Agree to Terms and Conditions</legend>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <input type="checkbox" class="terms" id="term1">
+
+                                                I agree that the platform fee paid to Companydeals is non-refundable, even if no deal happens. The fee is only for access to listings and sharing contacts, not for ensuring any deal or response. There is no guarantee of buyer interest, seller action, or a successful transaction.
+
+
+                                            </label><br>
+
+                                            <label>
+                                                <input type="checkbox" class="terms" id="term2"> I am solely responsible for checking the authenticity and legality of all parties and documents involved. Companydeals will not be held liable for any loss, fraud, or failure by any party in the deal.
+                                                Any issue found before or after the deal is entirely my responsibility.
+
+
+                                            </label><br>
+
+                                            <label>
+                                                <input type="checkbox" class="terms" id="term3">I allow Companydeals to share my name, phone number, and email with the other party after payment. I accept that all communication and transactions are at my own risk. I will not hold Companydeals responsible for any dispute, miscommunication, or failed deal.
+                                                <!-- <b>All the entries of Companies, Properties, Trademarks and Assignments (in Seller & buyer Section both) must reflect on top as and when edited.</b> -->
+
+                                            </label><br>
+                                            <p class="text-danger d-none">You must agree to all terms before submitting.</p>
                                         </div>
                                     </div>
+
+                                </fieldset>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a class="cta-primary" href="{{ route('user.seller.companyform.showstep3',['id' => $companyData->id])}}">Previous</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="cta-primary float-end" type="submit">Save</button>
+                                    </div>
+                                </div>
                         </form>
                     </div>
                 </div>

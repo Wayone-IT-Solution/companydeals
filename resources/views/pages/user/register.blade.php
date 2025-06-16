@@ -37,8 +37,8 @@
             </div>
             <div class="col-md-12">
                <div class="field">
-                  <label for="phone">Phone Number</label>
-                  <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" placeholder="Phone Number" required="">
+                  <label for="phone">Whatsapp Number Only</label>
+                  <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" placeholder="Whatsapp Number Only" required="">
                </div>
             </div>
             <div class="col-md-12">

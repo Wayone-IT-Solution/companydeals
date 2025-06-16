@@ -4,7 +4,7 @@
   <div class="col-12 grid-margin">
     <div class="card">
       <div class="card-body">
-        <h3>Noc Trademarks</h3>
+        <h3>Company Lists</h3>
         @if(session('message'))
         <div class="alert alert-success">
           <div> {{ session('message') }}</div>
@@ -18,6 +18,8 @@
                 <th>Name</th>
                 <th>Ask price</th>
                 <th>Is Active?</th>
+                <th>Deal Closed</th>
+                <th>Featured</th>
                 <th>Payment</th>
                 <th> View </th>
                 <th> Date & TimeStamp </th>
@@ -32,6 +34,10 @@
                 <td class="text-center">{{ $company->name }}</td>
                 <td class="text-center">{{ $company->ask_price }} {{ $company->ask_price_unit }}</td>
                 <td class="text-center">{{ $company->status }}</td>
+                <td class="text-center">
+                  {{ $company->deal_closed ? 'Yes' : 'No' }}</td>
+                <td class="text-center">
+                  {{ $company->home_featured ? 'Yes' : 'No' }}</td>
                 <td><a href="{{ route('admin.company.payment', ['service_id'=>$company->id,'service_type'=>'seller_company']) }}">Seller Payment</a></td>
                 <td><a href="{{ route('admin.company.detail', $company->id) }}"><i class="mdi mdi-eye-outline"></i></a> </td>
 

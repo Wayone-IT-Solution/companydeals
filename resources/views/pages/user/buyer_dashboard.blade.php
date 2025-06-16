@@ -44,7 +44,7 @@
 
                                                     @if($company['buyer_status'] == 'active')
                                                     @php
-                                                    
+
                                                     $updatedSeller = str_replace("No of deal closed", "</br><b>No of deal closed previously</b>", $company['seller']);
                                                     $updatedSeller = str_replace("amount of deal closed:", "</br><b>Amount of deal closed previously:</b>", $updatedSeller.'</br></br>');
                                                     @endphp
@@ -176,8 +176,15 @@
                                         <article>
                                             <ul class="feature-list">
                                                 @if($property['buyer_status'] == 'active')
-                                                <li>Sellar Detailss: <br />
-                                                    {!!$property['seller']!!}</li>
+                                                <li style="
+    border-bottom: 1px solid black;
+"> Sellar Details: <br />
+                                                    {!!$property['seller']!!}
+
+                                                    <hr>
+
+                                                </li>
+
                                                 @endif
                                                 @if($property['buyer_status'] != 'active')
                                                 <li>
@@ -216,7 +223,7 @@
                                         <article>
                                             <ul class="feature-list">
                                                 @if($trademark['buyer_status'] == 'active')
-                                                <li>Sellar Detailss: <br />
+                                                <li style="border-bottom: 1px solid black;">Sellar Details: <br />
                                                     {!!$trademark['seller']!!}</li>
                                                 @endif
                                                 @if($trademark['buyer_status'] == 'inactive')
@@ -260,7 +267,7 @@
                                         <article>
                                             <ul class="feature-list">
                                                 @if($assignment['buyer_status'] == 'active')
-                                                <li>Sellar Detailss: <br />
+                                                <li style="border-bottom:1px solid black ;">Seller Details: <br />
                                                     {!!$assignment['seller']!!}</li>
                                                 @endif
                                                 @if($assignment['buyer_status'] == 'inactive')
@@ -487,7 +494,7 @@
                                         <article>
                                             <ul class="feature-list">
                                                 @if($trademark['buyer_status'] == 'active')
-                                                <li>Sellar Detailss: <br />
+                                                <li style="border-bottom:1px solid black ;">Selleassigbr Details: <br />
                                                     {!!$trademark['seller']!!}</li>
                                                 @endif
                                                 @if($trademark['buyer_status'] == 'inactive')
@@ -536,7 +543,7 @@
                                         <article>
                                             <ul class="feature-list">
                                                 @if($assignment['buyer_status'] == 'active')
-                                                <li>Sellar Detailss: <br />
+                                                <li style="border-bottom:1px solid black ;">Seller Details: <br />
                                                     {!!$assignment['seller']!!}</li>
                                                 @endif
                                                 @if($assignment['buyer_status'] == 'inactive')

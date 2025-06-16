@@ -87,7 +87,7 @@ class TrademarkController extends Controller
     }
     public function trademarklist()
     {
-        $nocTrademarks = NocTrademark::all()->sortByDesc('updated_at');
+        $nocTrademarks = NocTrademark::all()->sortByDesc('created_at');
         return view('admin.pages.trademark.list', compact('nocTrademarks'));
     }
     public function paymentform($service_id,$service_type)

@@ -155,6 +155,7 @@ class BuyerController extends Controller
     }
     public function dashboard()
     {
+
         $buyer_id = \Auth::guard('user')->id();
         $buyer = Buyer::findOrFail($buyer_id);
 

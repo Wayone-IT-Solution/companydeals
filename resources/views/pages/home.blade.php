@@ -146,132 +146,47 @@
 
     <div class="row g-4">
       {{-- Featured Company --}}
-      @if ($dashBoardData['featured_company'])
+      @if ($dashBoardData['featured_company']->count() > 0)
+      @foreach($dashBoardData['featured_company'] as $company)
+
         <div class="col-md-6 col-lg-3 d-flex">
           <div class="card featured-card w-100 shadow-sm">
-            <div class="badge bg-success text-white position-absolute top-0 end-0 m-3">Company</div>
-            <img src="{{ asset('images/feature-img1.jpg') }}" class="card-img-top" alt="Company for sale">
-            <div class="card-body">
-              <h5 class="card-title fw-semibold">Company for Sale</h5>
-              <hr>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Type of Entity:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_company']->type_of_entity }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">ROC:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_company']->roc }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Incorporation Year:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_company']->year_of_incorporation }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Industry:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_company']->industry }}</span>
-              </div>
-              <div>
-                <strong class="text-dark d-block">GST Available:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_company']->have_gst }}</span>
+            <div class="badge bg-success text-white position-absolute top-0 end-0 m-3">Companies</div>
+            <div class="card-body p-0">
+              <div class="featured-companies-scroll" style="max-height: 800px; overflow-y: auto;">
+                  <div class="p-3 border-bottom">
+                    <img src="{{ asset('images/feature-img1.jpg') }}" class="card-img-top mb-2" alt="Company for sale">
+                    <h5 class="card-title fw-semibold">Company for Sale</h5>
+                    <hr>
+                    <div class="mb-2">
+                      <strong class="text-dark d-block">Type of Entity:</strong>
+                      <span class="text-muted">{{ $company->type_of_entity }}</span>
+                    </div>
+                    <div class="mb-2">
+                      <strong class="text-dark d-block">ROC:</strong>
+                      <span class="text-muted">{{ $company->roc }}</span>
+                    </div>
+                    <div class="mb-2">
+                      <strong class="text-dark d-block">Incorporation Year:</strong>
+                      <span class="text-muted">{{ $company->year_of_incorporation }}</span>
+                    </div>
+                    <div class="mb-2">
+                      <strong class="text-dark d-block">Industry:</strong>
+                      <span class="text-muted">{{ $company->industry }}</span>
+                    </div>
+                    <div>
+                      <strong class="text-dark d-block">GST Available:</strong>
+                      <span class="text-muted">{{ $company->have_gst }}</span>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
         </div>
+        @endforeach
+
       @endif
 
-      {{-- Featured Property --}}
-      @if ($dashBoardData['featured_property'])
-        <div class="col-md-6 col-lg-3 d-flex">
-          <div class="card featured-card w-100 shadow-sm">
-            <div class="badge bg-success text-white position-absolute top-0 end-0 m-3">Property</div>
-            <img src="{{ asset('images/feature-img2.jpg') }}" class="card-img-top" alt="Property listing">
-            <div class="card-body">
-              <h5 class="card-title fw-semibold">GST Office Property</h5>
-              <hr>
-              <div class="mb-2">
-                <strong class="text-dark d-block">State:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_property']->state }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Pincode:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_property']->pincode }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Area (Sq.ft.):</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_property']->space }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Property Type:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_property']->type }}</span>
-              </div>
-              <div>
-                <strong class="text-dark d-block">Asking Price:</strong>
-                <span class="text-muted">₹{{ $dashBoardData['featured_property']->ask_price }}/{{ $dashBoardData['featured_property']->ask_price_unit }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      @endif
-
-      {{-- Featured Trademark --}}
-      @if ($dashBoardData['featured_nocTrademark'])
-        <div class="col-md-6 col-lg-3 d-flex">
-          <div class="card featured-card w-100 shadow-sm">
-            <div class="badge bg-success text-white position-absolute top-0 end-0 m-3">Trademark</div>
-            <img src="{{ asset('images/feature-img3.jpg') }}" class="card-img-top" alt="Trademark NOC">
-            <div class="card-body">
-              <h5 class="card-title fw-semibold">Trademark Available</h5>
-              <hr>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Word Mark:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_nocTrademark']->wordmark }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Trademark Class:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_nocTrademark']->class_no }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Proprietor:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_nocTrademark']->proprietor }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Valid Till:</strong>
-                <span class="text-muted">{{ date('j M, Y', strtotime($dashBoardData['featured_nocTrademark']->valid_upto)) }}</span>
-              </div>
-              <div>
-                <strong class="text-dark d-block">Asking Price:</strong>
-                <span class="text-muted">₹{{ $dashBoardData['featured_nocTrademark']->ask_price }}/{{ $dashBoardData['featured_nocTrademark']->ask_price_unit }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      @endif
-
-      {{-- Featured Assignment --}}
-      @if ($dashBoardData['featured_assignment'])
-        <div class="col-md-6 col-lg-3 d-flex">
-          <div class="card featured-card w-100 shadow-sm">
-            <div class="badge bg-success text-white position-absolute top-0 end-0 m-3">Assignment</div>
-            <img src="{{ asset('images/feature-img3.jpg') }}" class="card-img-top" alt="Assignment listing">
-            <div class="card-body">
-              <h5 class="card-title fw-semibold">Outsource Work</h5>
-              <hr>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Subject:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_assignment']->subject }}</span>
-              </div>
-              <div class="mb-2">
-                <strong class="text-dark d-block">Brief:</strong>
-                <span class="text-muted">{{ $dashBoardData['featured_assignment']->description }}</span>
-              </div>
-              <div>
-                <strong class="text-dark d-block">Min Deal Value:</strong>
-                <span class="text-muted">₹{{ $dashBoardData['featured_assignment']->deal_price }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      @endif
     </div>
   </div>
 </section>
@@ -283,7 +198,7 @@
                 <div class="counters_block">
                     <span class="count">{{$dashBoardData['no_company']}}</span>
                     <span class="fact-symbol persent">+</span>
-                    <p>No. of Companies Available</p>
+                    <p>No. of Business Available</p>
                 </div>
             </li>
             <li>

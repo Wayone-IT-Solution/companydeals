@@ -216,7 +216,7 @@ $certificate_year_option = GeneralUtils::get_compliance_year_option($selected_ce
                                 </div>
                                 <div class="col-md-6">
                                     <fieldset class="scheduler-border">
-                                        <legend class="scheduler-border">80/120 A Certificate <span class="text-danger">*</span></legend>
+                                        <legend class="scheduler-border"> 80/12A Certificate <span class="text-danger">*</span></legend>
                                         <div class="field">
 
 

@@ -17,7 +17,7 @@ $valid_upto = date('j F, Y', strtotime($trademark['valid_upto']));
 
                 @if(count($trademark['buyers'])>0 && $trademark['deal_closed'] !=1)
                 <li>Buyers</li>
-                <ul>
+                <ul style="border-bottom: 1px solid black; padding: 10px;">
                     @foreach ($trademark['buyers'] as $eachBuyer)
                     <ol>
                         {!!$eachBuyer['buyerDetail']!!}
@@ -29,7 +29,29 @@ $valid_upto = date('j F, Y', strtotime($trademark['valid_upto']));
                 </ul>
                 @endif
                 <!--   <li>URN: {{$trademark['urn']}} </li> -->
-                <li><strong>Is Active?: {{$trademark['is_active']}}</strong></li>
+                <li><strong>Is Active?:
+
+
+                        @if($trademark['is_active'] == 'inactive' && $trademark['approved']==0)
+                        Pending for approval
+                        @elseif($trademark['is_active'] == 'inactive' && $trademark['approved']==1)
+                        Inactive
+
+
+                        @else
+
+                        {{$trademark['is_active']}}
+                        @endif()
+
+
+
+                        <!-- {{$trademark['is_active']}} -->
+
+
+
+
+
+                    </strong></li>
                 <li>Word Mark: {{$trademark['wordmark']}}</li>
                 <li> Application Number: {{$trademark['application_no']}}</li>
                 <li>Class: {{$trademark['class_no']}}</li>
@@ -43,10 +65,12 @@ $valid_upto = date('j F, Y', strtotime($trademark['valid_upto']));
                 @endif
 
             </ul>
-            @if($trademark['is_active'] == 'inactive')
+            @if($trademark['approved'] == 1)
+            @if($trademark['payment_id'] ==null)
             <div class="col-md-6">
                 <a class="cta-primary mt-4" href="#">Payment Pending </a>
             </div>
+            @endif
             @endif
             @if($trademark['deal_closed']!=1)
 
