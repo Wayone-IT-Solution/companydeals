@@ -9,7 +9,7 @@
           </div>
 
           <div class="col-md-6 col-lg-4 email-text order-lg-3">
-            <p>Email: <a href="javascript:void(0)">admin@companydeals.com</a></p>
+            <p>Email: <a href="javascript:void(0)">companydeals4u@gmail.com</a></p>
           </div>
 
           <div class="col-lg-4 copyright-text order-lg-1">

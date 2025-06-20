@@ -159,7 +159,10 @@ class BuyerController extends Controller
         $buyer_id = \Auth::guard('user')->id();
         $buyer = Buyer::findOrFail($buyer_id);
 
-        $interestedCompany = $buyer->companies()->orderBy('updated_at', 'desc')->get();
+        $interestedCompany = $buyer->companies()->where(function ($q) {
+                $q->where('companies.deal_closed', 0)
+                    ->orWhereNull(column: 'companies.deal_closed');   // 0 या NULL दोनों ऐक्सेप्ट
+            })->orderBy('updated_at', 'desc')->get();
         $interestedCompanyArr = [];
 
         foreach ($interestedCompany as $eachCompany) {
@@ -271,7 +274,10 @@ class BuyerController extends Controller
             $interestedCompanyArr[] = $tempCompany;
         }
 
-        $interestedProperty = $buyer->properties()->orderBy('updated_at', 'desc')->get();
+        $interestedProperty = $buyer->properties()->where(function ($q) {
+                $q->where('properties.deal_closed', 0)
+                    ->orWhereNull(column: 'properties.deal_closed');   // 0 या NULL दोनों ऐक्सेप्ट
+            })->orderBy('updated_at', 'desc')->get();
         $interestedPropertyArr = array();
         foreach ($interestedProperty as $key => $eachProperty) {
 
@@ -288,7 +294,10 @@ class BuyerController extends Controller
             $interestedPropertyArr[] = $tempProperty;
         }
 
-        $interestedTrademarks = $buyer->noctrademarks()->orderBy('updated_at', 'desc')->get();
+        $interestedTrademarks = $buyer->noctrademarks()->where(function ($q) {
+                $q->where('noc_trademarks.deal_closed', 0)
+                    ->orWhereNull(column: 'noc_trademarks.deal_closed');   // 0 या NULL दोनों ऐक्सेप्ट
+            })->orderBy('updated_at', 'desc')->get();
         $interestedTrademarkArr = array();
         foreach ($interestedTrademarks as $key => $trademark) {
             //   if($trademark->deal_closed ==1)
@@ -307,7 +316,10 @@ class BuyerController extends Controller
             $interestedTrademarkArr[] = $tempTrademark;
         }
 
-        $interestedAssignments = $buyer->assignments()->orderBy('updated_at', 'desc')->get();
+        $interestedAssignments = $buyer->assignments()->where(function ($q) {
+                $q->where('assignments.deal_closed', 0)
+                    ->orWhereNull(column: 'assignments.deal_closed');   // 0 या NULL दोनों ऐक्सेप्ट
+            })->orderBy('updated_at', 'desc')->get();
         $interestedAssignmentArr = array();
         foreach ($interestedAssignments as $key => $assignment) {
             //   if($assignment->deal_closed ==1)

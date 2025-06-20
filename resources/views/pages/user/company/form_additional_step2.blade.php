@@ -60,7 +60,7 @@ $requiredstar = '<span class="text-danger">*</span>';
 
         <div class="field">
             <input type="hidden" name="{{$eachTurnover['turnoverYearField']}}" value="{{$eachTurnover['turnoverYear']}}">
-            <input id="{{$eachTurnover['turnoverField']}}" type="text" min="0" max="9999" class="form-control onlynumber fourdigit" name="{{$eachTurnover['turnoverField']}}" placeholder="Turnover for year {{$yr}}" {{$required}} value="{{$eachTurnover['turnover']}} " title="If you have no turnover, enter '0'">
+            <input id="{{$eachTurnover['turnoverField']}}"  oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" type="text" min="0" max="9999" class="form-control onlynumber fourdigit" name="{{$eachTurnover['turnoverField']}}" placeholder="Turnover for year {{$yr}}" {{$required}} value="{{$eachTurnover['turnover']}} " title="If you have no turnover, enter '0'">
 
         </div>
         <div class="field">
