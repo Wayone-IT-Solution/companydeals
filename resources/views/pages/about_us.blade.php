@@ -26,6 +26,9 @@
     border-radius: 18px;
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
   }
+  .form-floating>.form-control, .form-floating>.form-control:focus{
+    padding-top: 30px !important;
+  }
 
   .contact-form-card {
     background: #ffffff;

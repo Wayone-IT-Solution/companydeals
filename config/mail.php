@@ -114,7 +114,7 @@ return [
     ],
 
     'contact_us' =>[
-        'mail_to' => ['vimalkumarbharti@gmail.com','fcskumarcmohan@gmail.com'],
+        'mail_to' => ['fcskumarcmohan@gmail.com'],
         'subject' => 'Companydeal: Contact us Message',
     ],
 
