@@ -66,7 +66,7 @@
                 @if($property['deal_closed']!=1)
                 <div class="col-md-6">
                     @if($property['approved'] == 0)
-                    <a class="cta-primary mt-4" href="{{ route('user.seller.companyform.showstep1',['id' => $property['id']]) }}" type="submit">Edit</a>
+                    <a class="cta-primary mt-4" href="{{ route('user.seller.editproperty',['id' => $property['id']]) }}" type="submit">Edit</a>
                     @endif()
                 </div>
                 @endif

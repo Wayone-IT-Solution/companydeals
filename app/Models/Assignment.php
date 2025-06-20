@@ -84,7 +84,10 @@ class Assignment extends Model
         if ($condition == "all") {
             $assignments = $user->assignments;
         } else {
-            $assignments = $user->assignments()->where('assignments.is_active', $condition)->get();
+            $assignments = $user->assignments()->where(function ($q) {
+                $q->where('assignments.deal_closed', 0)
+                    ->orWhereNull('assignments.deal_closed');   // 0 या NULL दोनों ऐक्सेप्ट
+            })->where('assignments.is_active', $condition)->get();
         }
 
         if ($third == true) {

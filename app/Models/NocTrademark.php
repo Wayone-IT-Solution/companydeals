@@ -55,7 +55,10 @@ class NocTrademark extends Model
         if ($condition == "all") {
             $nocTrademarks = $user->nocTrademarks;
         } else {
-            $nocTrademarks = $user->nocTrademarks()->where('noc_trademarks.is_active', $condition)->get();
+            $nocTrademarks = $user->nocTrademarks()->where(function ($q) {
+                $q->where('noc_trademarks.deal_closed', 0)
+                    ->orWhereNull(column: 'noc_trademarks.deal_closed');   // 0 या NULL दोनों ऐक्सेप्ट
+            })->where('noc_trademarks.is_active', $condition)->get();
         }
 
 

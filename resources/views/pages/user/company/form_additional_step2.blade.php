@@ -94,7 +94,20 @@ $requiredstar = '<span class="text-danger">*</span>';
 
         <div class="field">
             <input type="hidden" name="{{$eachProfit['profitYearField']}}" value="{{$eachProfit['profitYear']}}">
-            <input title="If you have no Profit After Tax, enter '0'." id="{{$eachProfit['profitField']}}" type="number" min="-9999" max="9999" class="form-control onlynumber fourdigit" name="{{$eachProfit['profitField']}}" placeholder="Profit After Tax for year {{$yr}}" {{$required}} value="{{$eachProfit['profit']}}">
+<input 
+    title="If you have no Profit After Tax, enter '0'." 
+    id="{{ $eachProfit['profitField'] }}" 
+    type="text" 
+    min="-9999" 
+    max="9999" 
+    step="any" 
+    class="form-control onlynumber fourdigit" 
+    name="{{ $eachProfit['profitField'] }}" 
+    placeholder="Profit After Tax for year {{ $yr }}" 
+    {{ $required }} 
+    value="{{ $eachProfit['profit'] ?? '0' }}" 
+    oninput="this.value = this.value.replace(/[^-?\d.]/g, '')"
+/>
 
         </div>
         <div class="field">
@@ -147,7 +160,7 @@ $requiredstar = '<span class="text-danger">*</span>';
         <legend class="scheduler-border">Net Worth for year {{$turnover_base_yr}} <span class="text-danger">*</span></legend>
         <div class="field">
 
-            <input title="If you have no Net Worth, enter '0'." id="net_worth" type="number" min="-9999" max="9999" class="form-control onlynumber fourdigit" name="net_worth" placeholder="Net Worth for year {{$turnover_base_yr}}" required value="{{ old('net_worth',isset($companyData)? $companyData->net_worth:'')}}">
+            <input title="If you have no Net Worth, enter '0'." id="net_worth" type="text"  oninput="this.value = this.value.replace(/[^-?\d.]/g, '')" min="-9999" max="9999" class="form-control onlynumber fourdigit" name="net_worth" placeholder="Net Worth for year {{$turnover_base_yr}}" required value="{{ old('net_worth',isset($companyData)? $companyData->net_worth:'')}}">
         </div>
         <div class="field">
 
@@ -163,7 +176,8 @@ $requiredstar = '<span class="text-danger">*</span>';
         <legend class="scheduler-border">Reserve for year {{$turnover_base_yr}} <span class="text-danger">*</span></legend>
         <div class="field">
 
-            <input id="reserve" title="If you have no Reserve, enter '0'." type="number" min="-9999" max="9999" class="form-control onlynumber fourdigit" name="reserve" placeholder="Reserve for year {{$turnover_base_yr}}" required value="{{ old('reserve',isset($companyData)? $companyData->reserve:'')}}">
+            <input id="reserve" title="If you have no Reserve, enter '0'." oninput="this.value = this.value.replace(/[^-?\d.]/g, '')"
+ type="text" min="-9999" max="9999" class="form-control onlynumber fourdigit" name="reserve" placeholder="Reserve for year {{$turnover_base_yr}}" required value="{{ old('reserve',isset($companyData)? $companyData->reserve:'')}}">
         </div>
         <div class="field">
 

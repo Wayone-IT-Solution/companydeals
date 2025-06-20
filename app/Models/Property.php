@@ -53,7 +53,10 @@ class Property extends Model
         if ($condition == "all") {
             $properties = $user->properties;
         } else {
-            $properties = $user->properties()->where('properties.status', $condition)->get();
+            $properties = $user->properties()->where(function ($q) {
+                $q->where('properties.deal_closed', 0)
+                    ->orWhereNull(column: 'properties.deal_closed');   // 0 या NULL दोनों ऐक्सेप्ट
+            })->where('properties.status', $condition)->get();
         }
 
         if ($third == true) {
