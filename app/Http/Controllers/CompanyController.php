@@ -246,10 +246,11 @@ class CompanyController extends Controller
     {
         $companyData = Company::findOrFail($request->input('id'));
         if ($companyData->year_of_incorporation == date('Y')) {
-            $companyData = $this->resetstep2data($companyData);
+             $companyData = $this->resetstep2data($companyData);
             $companyData->update();
             return redirect()->route('user.seller.companyform.showstep3', ['id' => $companyData->id]);
         }
+
 
         return view('pages.user.company.form_step2', compact('companyData'));
     }
@@ -358,7 +359,7 @@ class CompanyController extends Controller
 
     public function showstep3(Request $request)
     {
-        $companyData = Company::findOrFail($request->input('id'));
+         $companyData = Company::findOrFail($request->input('id'));
         return view('pages.user.company.form_step3', compact('companyData'));
     }
     public function savestep3(Request $request)

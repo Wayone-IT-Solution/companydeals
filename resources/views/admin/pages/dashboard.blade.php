@@ -4,7 +4,7 @@
   <div class="col-md-12 grid-margin">
     <div class="card">
       <div class="card-body">
-  asaasssasa
+  Welcome to Companydeals Admin Panel 
       </div>
     </div>
 </div>

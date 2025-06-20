@@ -26,7 +26,7 @@ class SellerMiddleware
             if($user->email_verified != 1 && $user->phone_verified != 1){
                 \Auth::guard('user')->logout();
                 \Session::forget('role');
-            return redirect()->route('user.verfy.email_phone.form',$user->id)->with('status', 'Verify your email and whatsapp no.');
+            return redirect()->route('user.verfy.email_phone.form',$user->id)->with('status', 'Verify your email');
             }
             
         }

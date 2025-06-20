@@ -43,7 +43,7 @@
                 @endif
             </div>
          </div>
-         <div class="col-md-12">
+         {{-- <div class="col-md-12">
             <div class="field">
                 <h3>WhatsApp Verification</h3>
                 @if($user->phone_verified == 1)
@@ -57,7 +57,7 @@
                     </div>
                 @endif
             </div>
-         </div>
+         </div>--}}
          @if($user->email_verified == 1 && $user->phone_verified == 1)
             <div class="col-md-12 text-center">
                 <div class="alert alert-success">
