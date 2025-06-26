@@ -277,8 +277,9 @@ class SellerController extends Controller
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $appId = 'TEST10310976ef3ce904d9bdb42b558067901301';
-        $secretKey = 'cfsk_ma_test_f435d0c3021956a815830c109d762758_e32767c2';
+        $appId = config('services.cashfree.app_id');        // OR env('CASHFREE_APP_ID')
+        $secretKey = config('services.cashfree.secret_key'); // OR env('CASHFREE_SECRET_KEY')
+
 
         $user = \Auth::guard('user')->user();
         $orderData = [
@@ -320,9 +321,8 @@ class SellerController extends Controller
     {
         $orderId = $request->query('order_id');
         $orderToken = $request->query('order_token');
-        $appId = 'TEST10673109e5c4908e2942e0c65ea490137601';
-        $secretKey =  env('CASHFREE_SECRET_KEY');
-
+        $appId = config('services.cashfree.app_id');        // OR env('CASHFREE_APP_ID')
+        $secretKey = config('services.cashfree.secret_key'); // OR env('CASHFREE_SECRET_KEY')
         if (!$orderId || !$orderToken) {
             return redirect()->route('user.seller.dashboard')->with('error', 'Invalid payment return.');
         }
@@ -387,8 +387,9 @@ class SellerController extends Controller
         $company = Company::findOrFail($company_id);
         $user = \Auth::guard('user')->user();
 
-        $appId = 'TEST10310976ef3ce904d9bdb42b558067901301';
-        $secretKey = 'cfsk_ma_test_f435d0c3021956a815830c109d762758_e32767c2';
+        $appId = config('services.cashfree.app_id');        // OR env('CASHFREE_APP_ID')
+        $secretKey = config('services.cashfree.secret_key'); // OR env('CASHFREE_SECRET_KEY')
+
 
         $orderData = [
             "order_amount" => 100,
