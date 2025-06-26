@@ -11,6 +11,10 @@ use App\Models\Assignment;
 use App\Rules\MaxDigits;
 use App\Rules\NoEmailNoMobile;
 use App\Http\Controllers\Utils\GeneralUtils;
+use App\Models\Payment;
+use Illuminate\Support\Facades\Http;
+
+
 
 class SellerController extends Controller
 {
@@ -266,70 +270,50 @@ class SellerController extends Controller
         return view('pages.user.seller_payment');
     }
 
-   public function processPayment(Request $request)
-{
-    $request->validate([
-        'amount' => 'required|numeric|min:1',
-    ]);
 
-    // ✅ Sandbox credentials – make sure these are correct from your dashboard
-    $appId = 'TEST10673109e5c4908e2942e0c65ea490137601';
-    $secretKey =  env('CASHFREE_SECRET_KEY');
-
-    $user = \Auth::guard('user')->user();
-    $orderId = 'SELLER_' . uniqid();
-    $orderAmount = $request->amount;
-    $orderCurrency = 'INR';
-
-    $orderData = [
-        "order_id" => $orderId,
-        "order_amount" => $orderAmount,
-        "order_currency" => $orderCurrency,
-        "customer_details" => [
-            "customer_id" => (string) $user->id,
-            "customer_email" => $user->email,
-            "customer_phone" => $user->phone,
-        ],
-        "order_note" => "Seller Payment",
-        "order_meta" => [
-            // ✅ Avoid deprecated tokens in return_url
-            "return_url" => route('user.seller.dashboard') . "?order_id={$orderId}"
-        ]
-    ];
-
-    try {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post('https://sandbox.cashfree.com/pg/orders', [
-            'headers' => [
-                'x-client-id' => $appId,
-                'x-client-secret' => $secretKey,
-                'x-api-version' => '2022-09-01',
-                'Content-Type' => 'application/json',
-            ],
-            'body' => json_encode($orderData),
+    public function processPayment(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
         ]);
 
-        $body = json_decode($response->getBody(), true);
+        $appId = 'TEST10310976ef3ce904d9bdb42b558067901301';
+        $secretKey = 'cfsk_ma_test_f435d0c3021956a815830c109d762758_e32767c2';
 
-        return $body;
-        if (isset($body['payments']['url'])) {
-            return redirect($body['payments']['url']);
-        } else {
-            return back()->with('error', 'Unable to initiate payment. Please try again.');
+        $user = \Auth::guard('user')->user();
+        $orderData = [
+            "order_amount" => $request->amount,
+            "order_currency" => "INR",
+            "customer_details" => [
+                "customer_id" => str_replace(['@', '.'], '_', $user->email),
+                "customer_phone" => $user->phone,
+                "customer_email" => $user->email,
+                "customer_name" => $user->name ?? "Customer"
+            ],
+            "order_note" => "Seller Payment",
+            "order_meta" => [
+                "return_url" => route('user.seller.dashboard')
+            ],
+            "checkout_mode" => "REDIRECT"
+        ];
+
+        $response = Http::withHeaders([
+            'x-client-id' => $appId,
+            'x-client-secret' => $secretKey,
+            'x-api-version' => '2025-01-01',
+            'Content-Type' => 'application/json',
+        ])->post('https://sandbox.cashfree.com/pg/orders', $orderData);
+
+        $body = $response->json();
+
+        if (isset($body['payment_session_id'])) {
+            return view('pages.user.payment_session', [
+                'paymentSessionId' => $body['payment_session_id']
+            ]);
         }
 
-    } catch (\GuzzleHttp\Exception\RequestException $e) {
-        // ✅ Parse and show better API error message
-        if ($e->hasResponse()) {
-            $error = json_decode($e->getResponse()->getBody(), true);
-            return back()->with('error', 'Payment initiation failed: ' . ($error['message'] ?? 'Unknown error'));
-        }
-
-        return back()->with('error', 'Payment initiation failed: ' . $e->getMessage());
-    } catch (\Exception $e) {
-        return back()->with('error', 'Unexpected error: ' . $e->getMessage());
+        return back()->with('error', $body['message'] ?? 'Cashfree session creation failed.');
     }
-}
 
 
     public function paymentReturn(Request $request)
@@ -390,5 +374,126 @@ class SellerController extends Controller
         }
         $payments = $query->orderBy('created_at', 'desc')->get();
         return view('pages.user.seller_payment_history', compact('payments'));
+    }
+
+
+
+
+
+
+    // for company 
+    public function initiateCompanyPayment($company_id)
+    {
+        $company = Company::findOrFail($company_id);
+        $user = \Auth::guard('user')->user();
+
+        $appId = 'TEST10310976ef3ce904d9bdb42b558067901301';
+        $secretKey = 'cfsk_ma_test_f435d0c3021956a815830c109d762758_e32767c2';
+
+        $orderData = [
+            "order_amount" => 100,
+            "order_currency" => "INR",
+            "customer_details" => [
+                "customer_id" => str_replace(['@', '.'], '_', $user->email),
+                "customer_email" => $user->email,
+                "customer_phone" => $user->phone,
+                "customer_name" => $user->name
+            ],
+            "order_note" => "Company Payment: {$company->name}",
+            "order_meta" => [
+                "return_url" => route('user.seller.company.payment.return', ['company_id' => $company->id])
+            ],
+            "checkout_mode" => "REDIRECT"
+        ];
+
+        $response = Http::withHeaders([
+            'x-client-id' => $appId,
+            'x-client-secret' => $secretKey,
+            'x-api-version' => '2025-01-01',
+            'Content-Type' => 'application/json',
+        ])->post('https://sandbox.cashfree.com/pg/orders', $orderData);
+
+        $body = $response->json();
+
+        if (isset($body['payment_session_id'])) {
+            return view('pages.seller.company.payment_session', [
+                'paymentSessionId' => $body['payment_session_id']
+            ]);
+        }
+
+        return back()->with('error', $body['message'] ?? 'Cashfree payment session creation failed.');
+    }
+
+    public function paymentSuccess(Request $request, $company_id)
+    {
+        // return $company_id;
+
+        $user = \Auth::guard('user')->user(); // or admin if needed
+
+        $serviceType = 'seller_company';
+        $serviceId = $company_id;
+        $amount =  100; // fallback ₹100
+        $startDate = now();
+        $endDate =  now()->addMonth();
+
+        $transactionId = $request->input('order_id'); // comes from return_url
+
+        // 1. Create payment record
+        $payment = Payment::create([
+            'user_id' => $user->id,
+            'amount' => $amount,
+            'service_start_date' => $startDate,
+            'service_end_date' => $endDate,
+            'service_type' => $serviceType,
+            'service_id' => $serviceId,
+            'status' => 'paid',
+            'payment_method' => 'Online',
+            'payment_from' => 'seller',
+            'payment_type' => 'Online',
+            'transaction_id' => $transactionId,
+        ]);
+
+        // 2. Update related service
+        if ($serviceType === 'seller_company') {
+            $company = Company::findOrFail($serviceId);
+            $company->update([
+                'status' => 'active',
+                'payment_id' => $payment->id,
+            ]);
+
+            return redirect()->route('user.seller.dashboard')->with('success', 'Payment successful for your company listing.');
+        } elseif ($serviceType === 'buyer_company') {
+            $buyerCompany = \DB::table('buyer_company')->where('id', $serviceId)->first();
+            if ($buyerCompany) {
+                \DB::table('buyer_company')->where('id', $serviceId)->update([
+                    'is_active' => 'active'
+                ]);
+
+                return redirect()->route('user.seller.dashboard')
+                    ->with('success', 'Payment successful. Buyer company activated.');
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // return   $company = Company::findOrFail($company_id);
+        // $company->status = 'active'; // or mark payment received
+        // $company->save();
+
+        // return redirect()->route('user.seller.dashboard')->with('success', 'Payment successful for your company listing.');
     }
 }

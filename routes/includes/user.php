@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\BuyerController;
@@ -23,12 +24,12 @@ Route::post('/user/reset-password', [UserLoginController::class, 'resetPassword'
 Route::get('user/logout', [UserLoginController::class, 'logout'])->name('user.logout');
 
 Route::get('/user/change-password', [UserLoginController::class, 'showChangePasswordForm'])->name('user.change-password.form');
-    Route::post('/user/change-password', [UserLoginController::class, 'changePassword'])->name('user.change-password');
+Route::post('/user/change-password', [UserLoginController::class, 'changePassword'])->name('user.change-password');
 
-	Route::get('/user/buyer/message',[BuyerController::class,'message'])->name('user.buyer.messaage');
+Route::get('/user/buyer/message', [BuyerController::class, 'message'])->name('user.buyer.messaage');
 
 // Authrized access
-Route::middleware('sellerloggedin')->group(function() {
+Route::middleware('sellerloggedin')->group(function () {
 	Route::get('/user/seller/propertylist', [SellerController::class, 'seller_properties'])->name('user.seller.propertylist');
 
 	Route::get('/user/seller/dashboard', [SellerController::class, 'seller_dashboard'])->name('user.seller.dashboard');
@@ -44,8 +45,8 @@ Route::middleware('sellerloggedin')->group(function() {
 	Route::get('/user/seller/{id}/assignment', [SellerController::class, 'editAssignment'])->name('user.seller.editassignment');
 	Route::put('/user/seller/{id}/updateassignment', [SellerController::class, 'UpdateAssignment'])->name('user.seller.updateassignment');
 	Route::get('/user/seller/{id}/{buyer_id}/assignment/closedeal', [SellerController::class, 'closedealAssignment'])->name('user.seller.assignment.closedeal');
-	
-	
+
+
 	Route::put('/user/seller/{id}/updateproperty', [SellerController::class, 'updateProperty'])->name('user.seller.updateproperty');
 	Route::get('/user/seller/noctrademark', [SellerController::class, 'seller_noctrademark'])->name('user.seller.noctrademark');
 	Route::get('/user/seller/addtrademark', [SellerController::class, 'seller_addtrademark'])->name('user.seller.addtrademark');
@@ -54,6 +55,8 @@ Route::middleware('sellerloggedin')->group(function() {
 	Route::get('/user/seller/{id}/noctrademark', [SellerController::class, 'editNocTrademark'])->name('user.seller.editnoctrademark');
 	Route::put('/user/seller/{id}/updatenoctrademark', [SellerController::class, 'UpdateNocTrademark'])->name('user.seller.updatnoctrademark');
 	Route::get('/user/seller/{id}/{buyer_id}/closedealnoc', [SellerController::class, 'closedealNoc'])->name('user.seller.closedealnoc');
+	Route::get('/user/seller/company/pay/{company_id}', [SellerController::class, 'initiateCompanyPayment'])->name('user.seller.company.payment');
+	Route::get('/user/seller/company/payment/return/{company_id}', [SellerController::class, 'paymentSuccess'])->name('user.seller.company.payment.return');
 
 
 	Route::get('/user/seller/companylist', [CompanyController::class, 'seller_companylist'])->name('user.seller.companylist');
@@ -83,11 +86,11 @@ Route::middleware('sellerloggedin')->group(function() {
 	Route::get('/user/seller/payment/history', [SellerController::class, 'paymentHistory'])->name('user.seller.payment.history');
 });
 
-Route::middleware('buyerloggedin')->group(function() {
+Route::middleware('buyerloggedin')->group(function () {
 	Route::get('/user/buyer/dashboard', [BuyerController::class, 'dashboard'])->name('user.buyer.dashboard');
 	Route::get('/user/buyer/property', [BuyerController::class, 'property_filter'])->name('user.buyer.property');
 	Route::post('/user/buyer/property-filter-ajax', [BuyerController::class, 'property_filter_ajax'])->name('user.buyer.property_filter_ajax');
-	
+
 	Route::get('/user/buyer/noctrademark', [BuyerController::class, 'noctrademark_filter'])->name('user.buyer.noctrademark');
 	Route::post('/user/buyer/noctrademark-filter-ajax', [BuyerController::class, 'noctrademark_filter_ajax'])->name('user.buyer.noctrademark_filter_ajax');
 	Route::get('/user/buyer/{id}/property/addtointerested', [BuyerController::class, 'property_addtointerested'])->name('user.buyer.property.addtointerested');
@@ -107,8 +110,4 @@ Route::middleware('buyerloggedin')->group(function() {
 	Route::post('/user/buyer/assignment-filter-ajax', [BuyerController::class, 'assignment_filter_ajax'])->name('user.buyer.assignment_filter_ajax');
 	Route::get('/user/buyer/{id}/assignment/addtointerested', [BuyerController::class, 'assignment_addtointerested'])->name('user.buyer.assignment.addtointerested');
 	Route::get('/user/buyer/{id}/assignment/removefrominterested', [BuyerController::class, 'assignment_remove_from_interested'])->name('user.buyer.assignment.removefrominterested');
-
-	
 });
-
-
