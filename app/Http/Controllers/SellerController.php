@@ -259,4 +259,136 @@ class SellerController extends Controller
 
         return redirect()->route("user.seller.propertylist")->with('status', 'Your property has been saved successfully.');
     }
+
+    public function showPaymentForm()
+    {
+        // You can pass amount or other details as needed
+        return view('pages.user.seller_payment');
+    }
+
+   public function processPayment(Request $request)
+{
+    $request->validate([
+        'amount' => 'required|numeric|min:1',
+    ]);
+
+    // ✅ Sandbox credentials – make sure these are correct from your dashboard
+    $appId = 'TEST10673109e5c4908e2942e0c65ea490137601';
+    $secretKey =  env('CASHFREE_SECRET_KEY');
+
+    $user = \Auth::guard('user')->user();
+    $orderId = 'SELLER_' . uniqid();
+    $orderAmount = $request->amount;
+    $orderCurrency = 'INR';
+
+    $orderData = [
+        "order_id" => $orderId,
+        "order_amount" => $orderAmount,
+        "order_currency" => $orderCurrency,
+        "customer_details" => [
+            "customer_id" => (string) $user->id,
+            "customer_email" => $user->email,
+            "customer_phone" => $user->phone,
+        ],
+        "order_note" => "Seller Payment",
+        "order_meta" => [
+            // ✅ Avoid deprecated tokens in return_url
+            "return_url" => route('user.seller.dashboard') . "?order_id={$orderId}"
+        ]
+    ];
+
+    try {
+        $client = new \GuzzleHttp\Client();
+        $response = $client->post('https://sandbox.cashfree.com/pg/orders', [
+            'headers' => [
+                'x-client-id' => $appId,
+                'x-client-secret' => $secretKey,
+                'x-api-version' => '2022-09-01',
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($orderData),
+        ]);
+
+        $body = json_decode($response->getBody(), true);
+
+        return $body;
+        if (isset($body['payments']['url'])) {
+            return redirect($body['payments']['url']);
+        } else {
+            return back()->with('error', 'Unable to initiate payment. Please try again.');
+        }
+
+    } catch (\GuzzleHttp\Exception\RequestException $e) {
+        // ✅ Parse and show better API error message
+        if ($e->hasResponse()) {
+            $error = json_decode($e->getResponse()->getBody(), true);
+            return back()->with('error', 'Payment initiation failed: ' . ($error['message'] ?? 'Unknown error'));
+        }
+
+        return back()->with('error', 'Payment initiation failed: ' . $e->getMessage());
+    } catch (\Exception $e) {
+        return back()->with('error', 'Unexpected error: ' . $e->getMessage());
+    }
+}
+
+
+    public function paymentReturn(Request $request)
+    {
+        $orderId = $request->query('order_id');
+        $orderToken = $request->query('order_token');
+        $appId = 'TEST10673109e5c4908e2942e0c65ea490137601';
+        $secretKey =  env('CASHFREE_SECRET_KEY');
+
+        if (!$orderId || !$orderToken) {
+            return redirect()->route('user.seller.dashboard')->with('error', 'Invalid payment return.');
+        }
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get("https://sandbox.cashfree.com/pg/orders/{$orderId}", [
+                'headers' => [
+                    'x-client-id' => $appId,
+                    'x-client-secret' => $secretKey,
+                    'x-api-version' => '2022-09-01',
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
+            $body = json_decode($response->getBody(), true);
+            // Save/update payment in DB (assume Payment model exists)
+            $payment = \App\Models\Payment::updateOrCreate(
+                ['order_id' => $orderId],
+                [
+                    'user_id' => auth()->id(),
+                    'amount' => $body['order_amount'] ?? 0,
+                    'status' => $body['order_status'] ?? 'unknown',
+                    'payment_method' => $body['payment_method'] ?? null,
+                    'transaction_id' => $body['payment_id'] ?? null,
+                    'notes' => json_encode($body),
+                ]
+            );
+            if (($body['order_status'] ?? '') === 'PAID') {
+                return redirect()->route('user.seller.payment.history')->with('status', 'Payment successful!');
+            } else {
+                return redirect()->route('user.seller.payment.history')->with('error', 'Payment not successful.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('user.seller.payment.history')->with('error', 'Payment verification failed: ' . $e->getMessage());
+        }
+    }
+
+    public function paymentHistory(Request $request)
+    {
+        $query = \App\Models\Payment::where('user_id', auth()->id());
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->from);
+        }
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->to);
+        }
+        $payments = $query->orderBy('created_at', 'desc')->get();
+        return view('pages.user.seller_payment_history', compact('payments'));
+    }
 }

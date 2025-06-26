@@ -8,6 +8,12 @@
                 <div class="dashboard-details">
                     <button class="navToggle2 cta-primary mb-4"><i class="fa-solid fa-sliders"></i> Open Dashboard Nav</button>
 
+                    <!-- Seller Payment Button Start -->
+                    <div class="mb-4 text-end">
+                        <a href="{{ route('user.seller.payment') }}" class="btn btn-success">Seller Payment</a>
+                    </div>
+                    <!-- Seller Payment Button End -->
+
                     @if (session('status'))
                     <div class="alert alert-success">
                         {{ session('status') }}

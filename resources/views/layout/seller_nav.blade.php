@@ -50,6 +50,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('user.seller.payment.history') }}">
+                    Payment History
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('user.logout') }}">
                     Logout
                 </a>

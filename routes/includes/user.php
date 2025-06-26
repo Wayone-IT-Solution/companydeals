@@ -77,6 +77,10 @@ Route::middleware('sellerloggedin')->group(function() {
 
 
 	/***add edit company end****/
+	Route::get('/user/seller/payment', [SellerController::class, 'showPaymentForm'])->name('user.seller.payment');
+	Route::post('/user/seller/payment/process', [SellerController::class, 'processPayment'])->name('user.seller.payment.process');
+	Route::get('/user/seller/payment/return', [SellerController::class, 'paymentReturn'])->name('user.seller.payment.return');
+	Route::get('/user/seller/payment/history', [SellerController::class, 'paymentHistory'])->name('user.seller.payment.history');
 });
 
 Route::middleware('buyerloggedin')->group(function() {
